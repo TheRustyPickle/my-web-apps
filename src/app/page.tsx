@@ -11,7 +11,7 @@ export default function Home() {
 	const [loading, setLoading] = useState(false);
 
 	const handleButtonPress = () => {
-		state = { error: {}, message: null };
+		state = { message: null };
 		setLoading(true);
 	};
 
@@ -32,10 +32,11 @@ export default function Home() {
 				/>
 				<button
 					type="submit"
-					className={
-						"bg-blue-500 text-white p-2 rounded-r-md hover:bg-blue-600 focus:outline-none"
-					}
+					className={`bg-blue-500 text-white p-2 rounded-r-md hover:bg-blue-600 focus:outline-none ${
+						loading ? "opacity-50 cursor-not-allowed" : ""
+					}`}
 					onClick={handleButtonPress}
+					aria-disabled={loading}
 				>
 					Submit
 				</button>
@@ -44,14 +45,6 @@ export default function Home() {
 				{state.message && !loading ? (
 					<p className="mt-2 text-sm text-red-500">{state.message}</p>
 				) : null}
-				{state.error?.link?.map(
-					(error: string) =>
-						!loading && (
-							<p className="mt-2 text-sm text-red-500" key={error}>
-								{error}
-							</p>
-						),
-				)}
 			</div>
 			{loading ? (
 				<div className="loading-container">
@@ -61,7 +54,7 @@ export default function Home() {
 			{state.parsedDownloadables && !loading ? (
 				<LinkItem
 					fullLinks={state.parsedDownloadables.fullLinks}
-					parsedLinks={state.parsedDownloadables.parsedLinks}
+					partialLinks={state.parsedDownloadables.partialLinks}
 				/>
 			) : null}
 		</div>

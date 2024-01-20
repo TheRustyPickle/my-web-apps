@@ -3,46 +3,57 @@ import { truncateLink } from "./utils";
 
 export function startParsing(htmlContent: string, link: string) {
 	const $ = cheerio.load(htmlContent);
-	const downloadables: string[] = [];
+	let downloadables: string[] = [];
+
 	$("img, video source").each((index, element) => {
 		const tagName = element.tagName.toLowerCase();
 		if (tagName === "img") {
 			const src = $(element).attr("src");
-			if (src) {
-				if (src.startsWith("https")) {
-					if (!downloadables.includes(src)) {
-						downloadables.push(src);
-					}
-				} else {
-					if (!downloadables.includes(src + link)) {
-						downloadables.push(link + src);
-					}
-				}
-			}
+			downloadables = addToList(downloadables, src, link);
 		} else if (tagName === "source") {
 			const src = $(element).attr("src");
-			if (src) {
-				if (src.startsWith("https")) {
-					if (!downloadables.includes(src)) {
-						downloadables.push(src);
-					}
-				} else {
-					if (!downloadables.includes(src + link)) {
-						downloadables.push(link + src);
-					}
-				}
-			}
+			downloadables = addToList(downloadables, src, link);
 		}
 	});
-	const newLinks = cleanLinks(downloadables);
+	const newLinks = separateLinks(downloadables);
 
 	return {
 		fullLinks: downloadables,
-		parsedLinks: newLinks,
+		partialLinks: newLinks,
 	};
 }
 
-function cleanLinks(links: string[]): string[] {
+function addToList(
+	currentList: string[],
+	toAdd: string | undefined,
+	baseUrl: string,
+) {
+	if (!toAdd) {
+		return currentList;
+	}
+
+	if (toAdd.startsWith("https")) {
+		if (!currentList.includes(toAdd)) {
+			currentList.push(toAdd);
+		}
+	} else {
+		let properLink = "";
+
+		if (toAdd.startsWith("/")) {
+			properLink = baseUrl + toAdd;
+		} else {
+			properLink = `${baseUrl}/${toAdd}`;
+		}
+
+		if (!currentList.includes(properLink)) {
+			currentList.push(properLink);
+		}
+	}
+
+	return currentList;
+}
+
+function separateLinks(links: string[]): string[] {
 	const cleanLinks: string[] = [];
 
 	for (const link of links) {

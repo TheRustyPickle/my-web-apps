@@ -12,13 +12,10 @@ const FormSchema = z.object({
 });
 
 export type State = {
-	error?: {
-		link?: string[];
-	};
 	message?: string | null;
 	parsedDownloadables?: {
 		fullLinks: string[];
-		parsedLinks: string[];
+		partialLinks: string[];
 	};
 };
 
@@ -32,30 +29,26 @@ export async function checkLink(
 
 	if (!validatedFields.success) {
 		return {
-			error: validatedFields.error.flatten().fieldErrors,
-			message: "Missing Fields",
+			message: String(validatedFields.error.flatten().fieldErrors.link),
 		};
 	}
 
 	const url = removeTrailingSlash(validatedFields.data.link);
 
-	let htmlContent = "";
+	const { htmlContent, failedAction } = await getHTMLContent(url);
 
-	try {
-		htmlContent = await getHTMLContent(url);
-
-	} catch (err) {
+	if (failedAction) {
 		return {
-			message: "Failed to get HTML content from the site.",
+			message: htmlContent,
 		};
 	}
 
-	const {fullLinks, parsedLinks} = startParsing(htmlContent, url);
+	const { fullLinks, partialLinks } = startParsing(htmlContent, url);
 
 	return {
 		parsedDownloadables: {
 			fullLinks: fullLinks,
-			parsedLinks: parsedLinks
+			partialLinks: partialLinks,
 		},
 	};
 }
@@ -66,14 +59,16 @@ async function getHTMLContent(url: string) {
 	});
 	const page = await browser.newPage();
 	let pageContent = "";
+	let failedAction = false;
 
 	try {
 		await page.goto(url);
 		pageContent = await page.content();
 	} catch (err) {
+		failedAction = true;
 		pageContent = "Failed to get the site's HTML. Is the link valid?";
 	}
 	await browser.close();
 
-	return pageContent;
+	return { htmlContent: pageContent, failedAction: failedAction };
 }
