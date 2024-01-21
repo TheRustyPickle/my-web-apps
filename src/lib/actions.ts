@@ -63,6 +63,7 @@ async function getHTMLContent(url: string) {
 
 	try {
 		await page.goto(url);
+		await page.waitForTimeout(2000)
 		pageContent = await page.content();
 	} catch (err) {
 		failedAction = true;

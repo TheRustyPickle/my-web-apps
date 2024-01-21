@@ -2,19 +2,31 @@ import * as cheerio from "cheerio";
 import { truncateLink } from "./utils";
 
 export function startParsing(htmlContent: string, link: string) {
+	const rootUrl = extractRootUrl(link);
+
 	const $ = cheerio.load(htmlContent);
 	let downloadables: string[] = [];
-
-	$("img, video source").each((index, element) => {
-		const tagName = element.tagName.toLowerCase();
-		if (tagName === "img") {
-			const src = $(element).attr("src");
-			downloadables = addToList(downloadables, src, link);
-		} else if (tagName === "source") {
-			const src = $(element).attr("src");
-			downloadables = addToList(downloadables, src, link);
-		}
-	});
+	$("img, video, audio, source, a, embed, object, iframe, link").each(
+		(index, element) => {
+			const tagName = element.tagName.toLowerCase();
+			if (
+				tagName === "img" ||
+				tagName === "source" ||
+				tagName === "audio" ||
+				tagName === "embed" ||
+				tagName === "object" ||
+				tagName === "iframe"
+			) {
+				const src = $(element).attr("src");
+				downloadables = addToList(downloadables, src, rootUrl);
+			} else if (tagName === "a") {
+				const href = $(element).attr("href");
+				if (href && /\.(pdf|docx|xlsx|txt)$/i.test(href)) {
+					downloadables = addToList(downloadables, href, rootUrl);
+				}
+			}
+		},
+	);
 	const newLinks = separateLinks(downloadables);
 
 	return {
@@ -26,41 +38,89 @@ export function startParsing(htmlContent: string, link: string) {
 function addToList(
 	currentList: string[],
 	toAdd: string | undefined,
-	baseUrl: string,
+	rootUrl: string,
 ) {
 	if (!toAdd) {
 		return currentList;
 	}
 
-	if (toAdd.startsWith("https")) {
+	let linkToAdd = "";
+	let noCleaning = false;
+
+	if (toAdd.startsWith("https://") || toAdd.startsWith("http://")) {
 		if (!currentList.includes(toAdd)) {
-			currentList.push(toAdd);
+			linkToAdd = toAdd;
+		}
+	} else if (toAdd.startsWith("data:")) {
+		if (!currentList.includes(toAdd)) {
+			linkToAdd = toAdd;
+			noCleaning = true;
 		}
 	} else {
 		let properLink = "";
 
 		if (toAdd.startsWith("/")) {
-			properLink = baseUrl + toAdd;
+			properLink = rootUrl + toAdd;
 		} else {
-			properLink = `${baseUrl}/${toAdd}`;
+			properLink = `${rootUrl}/${toAdd}`;
 		}
 
 		if (!currentList.includes(properLink)) {
-			currentList.push(properLink);
+			linkToAdd = properLink;
 		}
+	}
+
+	if (!(linkToAdd === "")) {
+		if (!noCleaning) {
+			linkToAdd = cleanURL(linkToAdd);
+		}
+		currentList.push(linkToAdd);
 	}
 
 	return currentList;
 }
 
+/**
+ * Truncate links to the last two parts of the url. If not a http url, replaces with a custom text
+ * @param links A list of URLs
+ * @returns Truncated links
+ */
 function separateLinks(links: string[]): string[] {
 	const cleanLinks: string[] = [];
 
 	for (const link of links) {
-		const splitted = link.split("/");
-		const lastTwo = splitted.slice(-2).join("/");
-		cleanLinks.push(truncateLink(lastTwo));
+		if (link.startsWith("data")) {
+			cleanLinks.push("Right Click => Open in New Tab to view");
+		} else {
+			const splitted = link.split("/");
+			const lastTwo = splitted.slice(-2).join("/");
+			cleanLinks.push(truncateLink(lastTwo));
+		}
 	}
 
 	return cleanLinks;
+}
+
+/**
+ * Cleans a URL ending. From example.com/image.png?trim=some-more-stuff to example.com/image.png
+ * @param url A valid URL
+ * @returns A cleaned up valid URL
+ */
+function cleanURL(url: string): string {
+	const urlObject = new URL(url);
+	const pathnameParts = urlObject.pathname.split("/");
+	const filename = pathnameParts.pop();
+	const cleanedPathname = `/${filename}`;
+	const cleanedUrl = `${urlObject.origin}${pathnameParts.join(
+		"/",
+	)}${cleanedPathname}`;
+
+	return cleanedUrl;
+}
+
+function extractRootUrl(url: string): string {
+	const urlObject = new URL(url);
+	return `${urlObject.protocol}//${urlObject.hostname}${
+		urlObject.port ? `:${urlObject.port}` : ""
+	}`;
 }
