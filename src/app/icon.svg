@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   width="290"
+   height="370"
+   viewBox="0 0 290 370"
+   xml:space="preserve"
+   id="svg11"
+   sodipodi:docname="print_transparent.svg"
+   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><sodipodi:namedview
+   id="namedview11"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   inkscape:zoom="0.39355469"
+   inkscape:cx="308.72457"
+   inkscape:cy="584.41687"
+   inkscape:window-width="1920"
+   inkscape:window-height="1012"
+   inkscape:window-x="0"
+   inkscape:window-y="32"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="svg11" />
+<desc
+   id="desc1">Created with Fabric.js 4.4.0</desc>
+<defs
+   id="defs1">
+</defs>
+<g
+   transform="translate(640,512)"
+   id="background-logo">
+<rect
+   style="opacity:1;fill:#ffffff;fill-opacity:0;fill-rule:nonzero;stroke:none;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+   paint-order="stroke"
+   x="-640"
+   y="-512"
+   rx="0"
+   ry="0"
+   width="1280"
+   height="1024"
+   id="rect1" />
+</g>
+
+<g
+   transform="matrix(1.4143521,0,0,1.4143521,111.6788,185.49139)"
+   id="logo-logo">
+<g
+   paint-order="stroke"
+   id="g9">
+		<g
+   transform="matrix(0.46728591,-0.80838631,0.38240865,0.22051076,-40.367872,6.7706441)"
+   id="g4">
+<g
+   paint-order="stroke"
+   id="g3">
+		<g
+   id="g2">
+<polygon
+   style="opacity:1;fill:#0bda73;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+   paint-order="stroke"
+   points="0,-86 -100,86 100,86 "
+   id="polygon1" />
+</g>
+</g>
+</g>
+		<g
+   transform="matrix(0,0.52622575,-0.52686149,0,-16.160946,-51.229528)"
+   id="g7">
+<g
+   paint-order="stroke"
+   id="g6">
+		<g
+   id="g5">
+<polygon
+   style="opacity:1;fill:#0bda73;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+   paint-order="stroke"
+   points="0,-86 -100,86 100,86 "
+   id="polygon4" />
+</g>
+</g>
+</g>
+		<g
+   transform="matrix(0.24466824,0,0,-0.24466824,22.684305,0)"
+   id="g8">
+<path
+   style="opacity:1;fill:#393c3b;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+   paint-order="stroke"
+   transform="translate(-1625,-1300.0013)"
+   d="m 2011.2,855.574 -375.56,375.556 c 159.68,0.83 289.32,130.91 289.32,290.78 0,160.38 -130.46,291.05 -290.85,291.05 h -365.52 c -22.88,0 -41.55,-18.67 -41.55,-41.55 V 828.598 c 0,-18.668 12.65,-35.129 30.71,-40.149 18.27,-4.816 37.34,3.012 46.77,19.27 l 217.39,374.761 h -96.15 L 1310.14,982.953 v 248.097 h 212.04 l 432.25,-432.245 c 7.84,-7.84 18.11,-11.762 28.39,-11.762 10.27,0 20.54,3.922 28.38,11.762 15.68,15.672 15.68,41.097 0,56.769 z m -701.06,830.126 304.1,-178.65 -83.5,-143.92 h 95.95 l 80.09,138.1 c 11.64,19.67 4.81,44.96 -14.86,56.61 l -292.65,171.82 h 234.84 c 114.62,0 207.76,-93.14 207.76,-207.75 0,-108.8 -84.31,-198.52 -191.3,-206.95 -5.42,-0.41 -340.43,-0.6 -340.43,-0.6 v 371.34"
+   stroke-linecap="round"
+   id="path7" />
+</g>
+</g>
+</g>
+
+
+</svg>
