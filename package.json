@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
+    "clsx": "^2.1.0",
     "htmlparser2": "^9.1.0",
     "is-url": "^1.2.4",
     "is-url-http": "^2.3.7",

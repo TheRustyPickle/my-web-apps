@@ -1,0 +1,61 @@
+"use client";
+import clsx from "clsx";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import Image from "next/image";
+
+const links = [
+	{ name: "Home", href: "/" },
+	{ name: "Media Scraper", href: "/media-scraper" },
+	{ name: "Repo D/L", href: "/repo-dl" },
+];
+
+const TopNavBar = () => {
+	const pathname = usePathname();
+	return (
+		<>
+			<div className="bg-blue-500 p-3 mb-8">
+				<div className="text-white text-lg antialiased container mx-auto flex items-center">
+					<div>
+						<a
+							href="https://github.com/TheRustyPickle"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<Image src="my-logo.svg" alt="A green black  R logo" width="25" height="20" />
+						</a>
+					</div>
+					<div className="flex space-x-4 grow justify-center">
+						{links.map((link) => {
+							return (
+								<Link
+									key={link.name}
+									href={link.href}
+									className={clsx(
+										" hover:bg-blue-600 hover:text-red-300 transition duration-300 px-3 py-1 rounded-lg",
+										{
+											"font-bold": pathname === link.href,
+										},
+									)}
+								>
+									<p className="hidden md:block">{link.name}</p>
+								</Link>
+							);
+						})}
+					</div>
+					<div className="w-8">
+						<a
+							href="https://github.com/TheRustyPickle/my-web-apps"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<Image src="github-logo.svg" alt="Github Logo" width="40" height="20" />
+						</a>
+					</div>
+				</div>
+			</div>
+		</>
+	);
+};
+
+export default TopNavBar;

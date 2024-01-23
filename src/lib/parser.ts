@@ -45,7 +45,6 @@ function addToList(
 	}
 
 	let linkToAdd = "";
-	let noCleaning = false;
 
 	if (toAdd.startsWith("https://") || toAdd.startsWith("http://")) {
 		if (!currentList.includes(toAdd)) {
@@ -54,7 +53,6 @@ function addToList(
 	} else if (toAdd.startsWith("data:")) {
 		if (!currentList.includes(toAdd)) {
 			linkToAdd = toAdd;
-			noCleaning = true;
 		}
 	} else {
 		let properLink = "";
@@ -71,9 +69,6 @@ function addToList(
 	}
 
 	if (!(linkToAdd === "")) {
-		if (!noCleaning) {
-			linkToAdd = cleanURL(linkToAdd);
-		}
 		currentList.push(linkToAdd);
 	}
 
@@ -99,23 +94,6 @@ function separateLinks(links: string[]): string[] {
 	}
 
 	return cleanLinks;
-}
-
-/**
- * Cleans a URL ending. From example.com/image.png?trim=some-more-stuff to example.com/image.png
- * @param url A valid URL
- * @returns A cleaned up valid URL
- */
-function cleanURL(url: string): string {
-	const urlObject = new URL(url);
-	const pathnameParts = urlObject.pathname.split("/");
-	const filename = pathnameParts.pop();
-	const cleanedPathname = `/${filename}`;
-	const cleanedUrl = `${urlObject.origin}${pathnameParts.join(
-		"/",
-	)}${cleanedPathname}`;
-
-	return cleanedUrl;
 }
 
 function extractRootUrl(url: string): string {

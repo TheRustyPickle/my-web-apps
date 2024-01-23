@@ -9,6 +9,14 @@ const FormSchema = z.object({
 	link: z.string().refine((data) => data.trim() !== "", {
 		message: "Link cannot be empty.",
 	}),
+	waitTime: z.coerce
+		.number()
+		.nullable()
+		.transform((num) => (num !== null ? num : 2)),
+	navigationTime: z.coerce
+		.number()
+		.nullable()
+		.transform((num) => (num !== null ? num : 30)),
 });
 
 export type State = {
@@ -25,6 +33,8 @@ export async function checkLink(
 ): Promise<State> {
 	const validatedFields = FormSchema.safeParse({
 		link: formData.get("linkToCheck"),
+		waitTime: formData.get("waitTime"),
+		navigationTime: formData.get("navigationTime"),
 	});
 
 	if (!validatedFields.success) {
@@ -33,9 +43,16 @@ export async function checkLink(
 		};
 	}
 
+	const waitTime = validatedFields.data.waitTime;
+	const navigationTime = validatedFields.data.navigationTime;
+
 	const url = removeTrailingSlash(validatedFields.data.link);
 
-	const { htmlContent, failedAction } = await getHTMLContent(url);
+	const { htmlContent, failedAction } = await getHTMLContent(
+		url,
+		waitTime,
+		navigationTime,
+	);
 
 	if (failedAction) {
 		return {
@@ -53,21 +70,31 @@ export async function checkLink(
 	};
 }
 
-async function getHTMLContent(url: string) {
+async function getHTMLContent(
+	url: string,
+	waitTime: number,
+	navigationTime: number,
+) {
 	const browser = await puppeteer.launch({
 		headless: "new",
 	});
 	const page = await browser.newPage();
+
+	await page.setViewport({
+		width: 1920,
+		height: 1080,
+	});
+
 	let pageContent = "";
 	let failedAction = false;
 
 	try {
-		await page.goto(url);
-		await page.waitForTimeout(2000)
+		await page.goto(url, { timeout: navigationTime * 1000 });
+		await page.waitForTimeout(waitTime * 1000);
 		pageContent = await page.content();
 	} catch (err) {
 		failedAction = true;
-		pageContent = "Failed to get the site's HTML. Is the link valid?";
+		pageContent = `Failed to get the site's HTML. Is the link valid? Error: ${err}`;
 	}
 	await browser.close();
 
