@@ -8,26 +8,40 @@ import React, { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { State } from "@/lib/actions";
 
+
 export default function Page() {
 	const [loading, setLoading] = useState(false);
 	const [showConfig, setShowConfig] = useState(false);
 	const [waitTime, setWaitTime] = useState(2);
 	const [navigationTime, setNavigationTime] = useState(30);
+	const [errorCount, setErrorCount] = useState(0);
 
 	const initialState: State = { message: null };
-	let [state, dispatch] = useFormState(checkLink, initialState);
+	const [state, dispatch] = useFormState(checkLink, initialState);
 
 	// On button submit show the processing message + remove the previous error message
 	const handleButtonPress = () => {
-		state = { message: null };
 		setLoading(true);
 	};
 
 	// If state changes, remove loading. If valid error message then show the dropdown selector
 	useEffect(() => {
 		setLoading(false);
-		if (state.message && state.message !== "Link cannot be empty.") {
-			setShowConfig(true);
+
+		// Show up the config if failed to get content 2 times in a row
+		if (state.message) {
+			// Empty link/input form will not be considered
+			if (state.message !== "Link cannot be empty.") {
+				setErrorCount((count) => {
+					const new_val = count + 1;
+					if (new_val >= 2) {
+						setShowConfig(true);
+					}
+					return new_val;
+				});
+			}
+		} else {
+			setErrorCount(0);
 		}
 	}, [state]);
 
@@ -44,7 +58,7 @@ export default function Page() {
 	}, [loading]);
 
 	return (
-		<div className="container mx-auto mt-10">
+		<div className="container mx-auto">
 			<form action={dispatch}>
 				<div className="flex flex-auto flex-row">
 					<input
