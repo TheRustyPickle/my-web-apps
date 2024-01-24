@@ -1,9 +1,8 @@
 "use server";
 
 import { z } from "zod";
-import puppeteer from "puppeteer";
 import { startParsing } from "./parser";
-import { removeTrailingSlash } from "./utils";
+import { getHTMLContent, removeTrailingSlash } from "./utils";
 
 const FormSchema = z.object({
 	link: z.string().refine((data) => data.trim() !== "", {
@@ -70,33 +69,7 @@ export async function checkLink(
 	};
 }
 
-async function getHTMLContent(
-	url: string,
-	waitTime: number,
-	navigationTime: number,
-) {
-	const browser = await puppeteer.launch({
-		headless: "new",
-	});
-	const page = await browser.newPage();
-
-	await page.setViewport({
-		width: 1920,
-		height: 1080,
-	});
-
-	let pageContent = "";
-	let failedAction = false;
-
-	try {
-		await page.goto(url, { timeout: navigationTime * 1000 });
-		await page.waitForTimeout(waitTime * 1000);
-		pageContent = await page.content();
-	} catch (err) {
-		failedAction = true;
-		pageContent = `Failed to get the site's HTML. Is the link valid? Error: ${err}`;
-	}
-	await browser.close();
-
-	return { htmlContent: pageContent, failedAction: failedAction };
+export async function checkRepoDL(prevState: number, formData: FormData): Promise<number> {
+	console.log("To do add repo checking");
+	return 0;
 }
