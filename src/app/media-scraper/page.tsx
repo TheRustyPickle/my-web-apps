@@ -8,7 +8,6 @@ import React, { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { State } from "@/lib/actions";
 
-
 export default function Page() {
 	const [loading, setLoading] = useState(false);
 	const [showConfig, setShowConfig] = useState(false);
@@ -64,18 +63,18 @@ export default function Page() {
 					<input
 						name="linkToCheck"
 						type="text"
-						placeholder="Enter your link"
-						className="border p-2 rounded-l-md w-full focus:outline-none"
+						placeholder="Enter a website link"
+						className="border p-2 rounded-l-md w-full focus:outline-none hover:border-blue-500 hover:border-1 focus:border-1 focus:border-blue-500 transition-all duration-300 ease-in-out"
 					/>
 					<button
 						type="submit"
-						className={`bg-blue-500 text-white p-2 rounded-r-md hover:bg-blue-600 focus:outline-none ${
+						className={`bg-blue-500 text-white p-2 w-1/12 min-w-20 rounded-r-md hover:bg-blue-600 focus:outline-none transition-all duration-300 ease-in-out ${
 							loading ? "opacity-50 cursor-not-allowed" : ""
 						}`}
 						onClick={handleButtonPress}
 						aria-disabled={loading}
 					>
-						Submit
+						Check
 					</button>
 				</div>
 				{/* Loading message */}
