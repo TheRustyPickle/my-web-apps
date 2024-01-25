@@ -15,14 +15,19 @@ const TopNavBar = () => {
 	return (
 		<>
 			<div className="bg-blue-500 p-3 mb-8">
-				<div className="text-white text-lg antialiased container mx-auto flex items-center">
-					<div>
+				<div className="text-white text-lg antialiased mx-5 flex items-center">
+					<div className="hidden sm:block">
 						<a
 							href="https://github.com/TheRustyPickle"
 							target="_blank"
 							rel="noopener noreferrer"
 						>
-							<Image src="my-logo.svg" alt="A green black  R logo" width="25" height="20" />
+							<Image
+								src="my-logo.svg"
+								alt="A green black  R logo"
+								width="25"
+								height="20"
+							/>
 						</a>
 					</div>
 					<div className="flex space-x-4 grow justify-center">
@@ -38,18 +43,23 @@ const TopNavBar = () => {
 										},
 									)}
 								>
-									<p className="hidden md:block">{link.name}</p>
+									<p>{link.name}</p>
 								</Link>
 							);
 						})}
 					</div>
-					<div className="w-8">
+					<div className="hidden sm:block">
 						<a
 							href="https://github.com/TheRustyPickle/my-web-apps"
 							target="_blank"
 							rel="noopener noreferrer"
 						>
-							<Image src="github-logo.svg" alt="Github Logo" width="40" height="20" />
+							<Image
+								src="github-logo.svg"
+								alt="Github Logo"
+								width="35"
+								height="20"
+							/>
 						</a>
 					</div>
 				</div>
