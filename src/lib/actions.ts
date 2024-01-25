@@ -69,7 +69,10 @@ export async function checkLink(
 	};
 }
 
-export async function checkRepoDL(prevState: number, formData: FormData): Promise<number> {
+export async function checkRepoDL(
+	prevState: number,
+	formData: FormData,
+): Promise<number> {
 	console.log("To do add repo checking");
 	return 0;
 }

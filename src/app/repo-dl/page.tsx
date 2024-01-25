@@ -10,7 +10,7 @@ export default function Page() {
 
 	return (
 		<div className="container mx-auto">
-			<form>
+			<form action={dispatch}>
 				<div className="flex items-center border-b-2 border-blue-500 py-2 bg-white shadow-md rounded-md focus-within:shadow-blue-400 hover:shadow-blue-400 transition-all duration-300 ease-in-out">
 					<input
 						type="text"
