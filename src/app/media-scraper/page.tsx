@@ -6,7 +6,7 @@ import RotatingEllipsis from "@/ui/RotatingEllipsis";
 import TimerConfig from "@/ui/TimerConfig";
 import React, { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
-import { State } from "@/lib/actions";
+import { ParserState } from "@/lib/actions";
 
 export default function Page() {
 	const [loading, setLoading] = useState(false);
@@ -15,7 +15,7 @@ export default function Page() {
 	const [navigationTime, setNavigationTime] = useState(30);
 	const [errorCount, setErrorCount] = useState(0);
 
-	const initialState: State = { message: null };
+	const initialState: ParserState = { message: null };
 	const [state, dispatch] = useFormState(checkLink, initialState);
 
 	// On button submit show the processing message + remove the previous error message

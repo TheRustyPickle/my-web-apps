@@ -1,10 +1,11 @@
 "use server";
 
 import { z } from "zod";
-import { startParsing } from "./parser";
+import { startParsing } from "./html_parser";
 import { getHTMLContent, removeTrailingSlash } from "./utils";
+import { fetchReleaseData } from "./repo_releases";
 
-const FormSchema = z.object({
+const ScraperFormSchema = z.object({
 	link: z.string().refine((data) => data.trim() !== "", {
 		message: "Link cannot be empty.",
 	}),
@@ -18,7 +19,13 @@ const FormSchema = z.object({
 		.transform((num) => (num !== null ? num : 30)),
 });
 
-export type State = {
+const RepoDLFormSchema = z.object({
+	link: z.string().refine((data) => data.trim() !== "", {
+		message: "Github Repository URL cannot be empty.",
+	}),
+});
+
+export type ParserState = {
 	message?: string | null;
 	parsedDownloadables?: {
 		fullLinks: string[];
@@ -26,11 +33,29 @@ export type State = {
 	};
 };
 
+export type ReleaseAsset = {
+	assetName: string;
+	downloadCount: number;
+};
+
+export type ReleaseData = {
+	releaseName: string;
+	releaseUrl: string;
+	publishedAt: string;
+	releaseAssets: ReleaseAsset[];
+};
+
+export type RepoDLState = {
+	message?: string | null;
+	releaseData?: ReleaseData[];
+	totalDownload?: number;
+};
+
 export async function checkLink(
-	prevState: State,
+	prevState: ParserState,
 	formData: FormData,
-): Promise<State> {
-	const validatedFields = FormSchema.safeParse({
+): Promise<ParserState> {
+	const validatedFields = ScraperFormSchema.safeParse({
 		link: formData.get("linkToCheck"),
 		waitTime: formData.get("waitTime"),
 		navigationTime: formData.get("navigationTime"),
@@ -70,9 +95,29 @@ export async function checkLink(
 }
 
 export async function checkRepoDL(
-	prevState: number,
+	prevState: RepoDLState,
 	formData: FormData,
-): Promise<number> {
-	console.log("To do add repo checking");
-	return 0;
+): Promise<RepoDLState> {
+	const validatedFields = RepoDLFormSchema.safeParse({
+		link: formData.get("repoLink"),
+	});
+
+	if (!validatedFields.success) {
+		return {
+			message: String(validatedFields.error.flatten().fieldErrors.link),
+		};
+	}
+
+	const repoUrl = validatedFields.data.link;
+
+	const releasesResponse = await fetchReleaseData(repoUrl);
+
+	if (typeof releasesResponse !== "string") {
+		const [releases, totalDownload] = releasesResponse;
+		console.log(totalDownload);
+	} else {
+		return { message: releasesResponse };
+	}
+
+	return {};
 }

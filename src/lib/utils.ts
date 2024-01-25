@@ -46,3 +46,19 @@ export async function getHTMLContent(
 
 	return { htmlContent: pageContent, failedAction: failedAction };
 }
+
+export function getUsernameRepo(repoUrl: string): [string, string] | null {
+	const splittedLink = repoUrl.split("/");
+
+	// Will still work if https is not present in the url
+	const githubLocation = splittedLink.indexOf("github.com");
+
+	if (githubLocation === -1) {
+		return null;
+	}
+
+	const username = splittedLink[githubLocation + 1];
+	const repoName = splittedLink[githubLocation + 2];
+
+	return [username, repoName];
+}
