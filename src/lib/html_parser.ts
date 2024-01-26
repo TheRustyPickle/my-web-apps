@@ -1,32 +1,38 @@
 import * as cheerio from "cheerio";
 import { truncateLink } from "./utils";
 
+const tagsToExtract = [
+	{ tag: "img", attribute: "src" },
+	{ tag: "source", attribute: "src" },
+	{ tag: "audio", attribute: "src" },
+	{ tag: "embed", attribute: "src" },
+	{ tag: "object", attribute: "data" },
+	{ tag: "iframe", attribute: "src" },
+	{ tag: "a", attribute: "href" },
+];
+
+const allowedExtensions =
+	/\.(pdf|docx|xlsx|txt|svg|png|jpg|jpeg|webp|mkv|mp4|mp3|gif|bmp|tif|tiff|ico|mp3|wav|ogg|html|htm|css|js|json|zip|rar|tar|gz)(\?.*)?$/i;
+
 export function startParsing(htmlContent: string, link: string) {
 	const rootUrl = extractRootUrl(link);
 
 	const $ = cheerio.load(htmlContent);
 	let downloadables: string[] = [];
-	$("img, video, audio, source, a, embed, object, iframe, link").each(
-		(index, element) => {
-			const tagName = element.tagName.toLowerCase();
-			if (
-				tagName === "img" ||
-				tagName === "source" ||
-				tagName === "audio" ||
-				tagName === "embed" ||
-				tagName === "object" ||
-				tagName === "iframe"
-			) {
-				const src = $(element).attr("src");
-				downloadables = addToList(downloadables, src, rootUrl);
-			} else if (tagName === "a") {
-				const href = $(element).attr("href");
-				if (href && /\.(pdf|docx|xlsx|txt)$/i.test(href)) {
-					downloadables = addToList(downloadables, href, rootUrl);
+	for (const { tag, attribute } of tagsToExtract) {
+		$(tag).each((index, element) => {
+			const value = $(element).attr(attribute);
+
+			// These three are safe to say that will contain a proper source for something downloadable.
+			if (tag === "img" || tag === "source" || tag === "audio") {
+				downloadables = addToList(downloadables, value, rootUrl);
+			} else {
+				if (value && allowedExtensions.test(value)) {
+					downloadables = addToList(downloadables, value, rootUrl);
 				}
 			}
-		},
-	);
+		});
+	}
 	const newLinks = separateLinks(downloadables);
 
 	return {
