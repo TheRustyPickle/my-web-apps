@@ -20,7 +20,7 @@ const RotatingEllipsis = () => {
 		setLoadingText(`Processing${ellipsis[ellipsisPosition]}`);
 	}, [ellipsisPosition, ellipsis]);
 
-	return <p className="text-blue-500 font-semibold">{loadingText}</p>;
+	return <p className="font-semibold">{loadingText}</p>;
 };
 
 export default RotatingEllipsis;
