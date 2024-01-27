@@ -2,11 +2,25 @@
 
 import { RepoDLState, checkRepoDL } from "@/lib/actions";
 import { useFormState } from "react-dom";
+import ReleaseItem from "@/ui/ReleaseItem";
+import { useState, useEffect } from "react";
+import RotatingEllipsis from "@/ui/RotatingEllipsis";
 
 export default function Page() {
-	const initialState: RepoDLState = { message: null };
+	const [loading, setLoading] = useState(false);
 
+	const initialState: RepoDLState = { message: null };
 	const [state, dispatch] = useFormState(checkRepoDL, initialState);
+
+	const handleButtonPress = () => {
+		setLoading(true);
+	};
+
+	useEffect(() => {
+		if (state) {
+			setLoading(false);
+		}
+	}, [state]);
 
 	return (
 		<div className="container mx-auto">
@@ -22,10 +36,33 @@ export default function Page() {
 				<div className="flex justify-center">
 					<button
 						type="submit"
-						className="bg-blue-500 text-white py-2 px-4 my-2 w-1/6 min-w-20 rounded-md hover:bg-blue-600 focus:outline-none transition-all duration-300 ease-in-out"
+						onClick={handleButtonPress}
+						className={`bg-blue-500 text-white py-2 min-w-28 px-4 my-2 w-1/6 rounded-md hover:bg-blue-600 focus:outline-none transition-all duration-300 ease-in-out${
+							loading ? "opacity-50 cursor-not-allowed" : ""
+						}`}
+						aria-disabled={loading}
 					>
-						Submit
+						{!loading ? (
+							"Check Releases"
+						) : (
+							<div className="text-white">
+								<RotatingEllipsis />
+							</div>
+						)}
 					</button>
+				</div>
+				{/* Either show release details or show the error message */}
+				<div className="flex item-center justify-center mt-4">
+					{state.releases && !loading ? (
+						<ReleaseItem
+							releaseData={state.releases.releaseData}
+							totalDL={state.releases.totalDownload}
+						/>
+					) : (
+						<div className="text-red-500">
+							<p>{state.message}</p>
+						</div>
+					)}
 				</div>
 			</form>
 		</div>

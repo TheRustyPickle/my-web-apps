@@ -80,7 +80,7 @@ export default function Page() {
 				{/* Loading message */}
 				<div>
 					{loading ? (
-						<div className="loading-container">
+						<div className="text-blue-500">
 							<RotatingEllipsis />
 						</div>
 					) : null}

@@ -23,7 +23,7 @@ export function startParsing(htmlContent: string, link: string) {
 		$(tag).each((index, element) => {
 			const value = $(element).attr(attribute);
 
-			// These three are safe to say that will contain a proper source for something downloadable.
+			// These three are safe to say that will contain a proper source for something downloadable
 			if (tag === "img" || tag === "source" || tag === "audio") {
 				downloadables = addToList(downloadables, value, rootUrl);
 			} else {

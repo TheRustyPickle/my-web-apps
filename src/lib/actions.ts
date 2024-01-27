@@ -42,13 +42,16 @@ export type ReleaseData = {
 	releaseName: string;
 	releaseUrl: string;
 	publishedAt: string;
+	releaseDownload: number;
 	releaseAssets: ReleaseAsset[];
 };
 
 export type RepoDLState = {
 	message?: string | null;
-	releaseData?: ReleaseData[];
-	totalDownload?: number;
+	releases?: {
+		releaseData: ReleaseData[];
+		totalDownload: number;
+	};
 };
 
 export async function checkLink(
@@ -113,11 +116,9 @@ export async function checkRepoDL(
 	const releasesResponse = await fetchReleaseData(repoUrl);
 
 	if (typeof releasesResponse !== "string") {
-		const [releases, totalDownload] = releasesResponse;
-		console.log(totalDownload);
-	} else {
-		return { message: releasesResponse };
+		const [releaseData, totalDownload] = releasesResponse;
+		return { releases: { releaseData, totalDownload } };
 	}
 
-	return {};
+	return { message: releasesResponse };
 }

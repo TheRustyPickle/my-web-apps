@@ -4,6 +4,11 @@ import { getUsernameRepo } from "./utils";
 import { RequestError } from "octokit";
 import { ReleaseData, ReleaseAsset } from "./actions";
 
+/**
+ *
+ * @param repoUrl A valid github repo url
+ * @returns An array containing release info + total downloads or an error message in string
+ */
 export async function fetchReleaseData(
 	repoUrl: string,
 ): Promise<[ReleaseData[], number] | string> {
@@ -15,11 +20,13 @@ export async function fetchReleaseData(
 
 	const [username, repoName] = usernameRepo;
 
+	// Create an octo client
 	const octo = Octokit.plugin(paginateRest);
 	const O = new octo();
 
 	const parameters = { owner: username, repo: repoName, per_page: 100 };
 	const releaseData: ReleaseData[] = [];
+	// Total download from all releases
 	let totalDownload = 0;
 
 	try {
@@ -34,12 +41,14 @@ export async function fetchReleaseData(
 
 				const publishedAt = published_at ?? "Not Available";
 				const releaseName = name ?? "Not Available";
-
+				// Total download for this specific release
+				let releaseDownload = 0;
 				const assetList: ReleaseAsset[] = [];
 
 				for (const asset of assets) {
 					const { name: assetName, download_count: downloadCount } = asset;
 					totalDownload += downloadCount;
+					releaseDownload += downloadCount;
 					const to_push: ReleaseAsset = { assetName, downloadCount };
 					assetList.push(to_push);
 				}
@@ -49,6 +58,7 @@ export async function fetchReleaseData(
 					releaseAssets: assetList,
 					releaseName,
 					publishedAt,
+					releaseDownload,
 				});
 			}
 		}
@@ -56,9 +66,9 @@ export async function fetchReleaseData(
 		if (err instanceof RequestError) {
 			switch (err.status) {
 				case 404:
-					return "Repository not found";
+					return "Error 404. Repository not found";
 				case 403:
-					return "Forbidden: You may not have permission to access the repository";
+					return "Error 403. Forbidden: You may not have permission to access the repository";
 
 				default:
 					return `An error occurred: ${err}`;

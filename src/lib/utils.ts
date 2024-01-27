@@ -2,6 +2,11 @@ import puppeteer from "puppeteer";
 
 const MAX_LINK_LENGTH = 50;
 
+/**
+ *
+ * @param url An url string
+ * @returns An url string that does not end with /
+ */
 export function removeTrailingSlash(url: string): string {
 	if (url.endsWith("/")) {
 		return url.slice(0, -1);
@@ -9,6 +14,11 @@ export function removeTrailingSlash(url: string): string {
 	return url;
 }
 
+/**
+ *
+ * @param link An url string
+ * @returns String truncated to 50 chars
+ */
 export function truncateLink(link: string): string {
 	if (link.length > MAX_LINK_LENGTH) {
 		return `${link.substring(0, MAX_LINK_LENGTH)}...`;
@@ -16,6 +26,13 @@ export function truncateLink(link: string): string {
 	return link;
 }
 
+/**
+ *
+ * @param url A url string
+ * @param waitTime How long a browser should wait before capturing the HTML content. Default 2 seconds
+ * @param navigationTime Maximum wait time for navigation. Default 30 seconds
+ * @returns htmlContent in String and whether the fetching failed or not
+ */
 export async function getHTMLContent(
 	url: string,
 	waitTime: number,
@@ -47,10 +64,16 @@ export async function getHTMLContent(
 	return { htmlContent: pageContent, failedAction: failedAction };
 }
 
+/**
+ *
+ * @param repoUrl A valid github repository Url
+ * @returns The repo owner username and the repository name or null as error
+ */
 export function getUsernameRepo(repoUrl: string): [string, string] | null {
 	const splittedLink = repoUrl.split("/");
 
-	// Will still work if https is not present in the url
+	// Favor incomplete links such as without https and links with extra param at the end
+	// As long as there is a github.com/username/repo. The other values won't have any impact
 	const githubLocation = splittedLink.indexOf("github.com");
 
 	if (githubLocation === -1) {
@@ -59,6 +82,10 @@ export function getUsernameRepo(repoUrl: string): [string, string] | null {
 
 	const username = splittedLink[githubLocation + 1];
 	const repoName = splittedLink[githubLocation + 2];
+	
+	if (!username || !repoName) {
+		return null;
+	}
 
 	return [username, repoName];
 }
