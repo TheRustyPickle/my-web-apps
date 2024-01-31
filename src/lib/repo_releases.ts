@@ -11,11 +11,11 @@ import { ReleaseData, ReleaseAsset } from "./actions";
  */
 export async function fetchReleaseData(
 	repoUrl: string,
-): Promise<[ReleaseData[], number] | string> {
+): Promise<[ReleaseData[], number, ReleaseData | null] | string> {
 	const usernameRepo = getUsernameRepo(repoUrl);
 
 	if (!usernameRepo) {
-		return "Failed to get Github repository information. Is the link a valid GitHub URL?";
+		return "Failed to get Github repository information. Is the link a valid GitHub Repository URL?";
 	}
 
 	const [username, repoName] = usernameRepo;
@@ -28,6 +28,7 @@ export async function fetchReleaseData(
 	const releaseData: ReleaseData[] = [];
 	// Total download from all releases
 	let totalDownload = 0;
+	let mostDownloaded: null | ReleaseData = null;
 
 	try {
 		for await (const response of O.paginate.iterator(
@@ -60,6 +61,24 @@ export async function fetchReleaseData(
 					publishedAt,
 					releaseDownload,
 				});
+
+				if (!mostDownloaded) {
+					mostDownloaded = {
+						releaseUrl,
+						releaseAssets: assetList,
+						releaseName,
+						publishedAt,
+						releaseDownload,
+					}
+				} else if (releaseDownload > mostDownloaded.releaseDownload) {
+					mostDownloaded = {
+						releaseUrl,
+						releaseAssets: assetList,
+						releaseName,
+						publishedAt,
+						releaseDownload,
+					}
+				}
 			}
 		}
 	} catch (err) {
@@ -76,5 +95,5 @@ export async function fetchReleaseData(
 		}
 		return `An unknown error occurred: ${err}`;
 	}
-	return [releaseData, totalDownload];
+	return [releaseData, totalDownload, mostDownloaded];
 }

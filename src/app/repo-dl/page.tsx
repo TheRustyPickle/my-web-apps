@@ -57,6 +57,7 @@ export default function Page() {
 						<ReleaseItem
 							releaseData={state.releases.releaseData}
 							totalDL={state.releases.totalDownload}
+							mostDownloaded={state.releases.mostDownloaded}
 						/>
 					) : (
 						<div className="text-red-500">
