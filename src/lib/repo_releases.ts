@@ -69,7 +69,7 @@ export async function fetchReleaseData(
 						releaseName,
 						publishedAt,
 						releaseDownload,
-					}
+					};
 				} else if (releaseDownload > mostDownloaded.releaseDownload) {
 					mostDownloaded = {
 						releaseUrl,
@@ -77,7 +77,7 @@ export async function fetchReleaseData(
 						releaseName,
 						publishedAt,
 						releaseDownload,
-					}
+					};
 				}
 			}
 		}

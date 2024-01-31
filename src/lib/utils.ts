@@ -82,7 +82,7 @@ export function getUsernameRepo(repoUrl: string): [string, string] | null {
 
 	const username = splittedLink[githubLocation + 1];
 	const repoName = splittedLink[githubLocation + 2];
-	
+
 	if (!username || !repoName) {
 		return null;
 	}
