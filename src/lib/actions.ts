@@ -50,6 +50,7 @@ export type RepoDLState = {
 	message?: string | null;
 	releases?: {
 		releaseData: ReleaseData[];
+		mostDownloaded: null | ReleaseData;
 		totalDownload: number;
 	};
 };
@@ -116,8 +117,8 @@ export async function checkRepoDL(
 	const releasesResponse = await fetchReleaseData(repoUrl);
 
 	if (typeof releasesResponse !== "string") {
-		const [releaseData, totalDownload] = releasesResponse;
-		return { releases: { releaseData, totalDownload } };
+		const [releaseData, totalDownload, mostDownloaded] = releasesResponse;
+		return { releases: { releaseData, totalDownload, mostDownloaded } };
 	}
 
 	return { message: releasesResponse };

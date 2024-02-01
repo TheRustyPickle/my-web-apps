@@ -4,14 +4,39 @@ import { ReleaseData } from "@/lib/actions";
 const ReleaseItem = ({
 	releaseData,
 	totalDL,
-}: { releaseData: ReleaseData[]; totalDL: number }) => {
+	mostDownloaded,
+}: {
+	releaseData: ReleaseData[];
+	totalDL: number;
+	mostDownloaded: ReleaseData | null;
+}) => {
 	return (
 		<div className="w-3/5">
 			{/* Top Component showing total download */}
-			<div className="m-4 p-6 bg-white rounded-lg shadow-md hover:shadow-blue-400 transition-all duration-300 ease-in-out flex flex-col justify-center items-center">
-				<h2 className="text-xl font-bold mb-4">Total Downloads</h2>
-				<p className="text-gray-700 text-2xl">{totalDL}</p>
+			<div className="flex justify-center text-center text-gray-700">
+				{/* Card for Total Downloads */}
+				<div className="p-6 mx-4 w-1/2 bg-white rounded-lg shadow-md hover:shadow-blue-400 transition-all duration-300 ease-in-out flex flex-col justify-center items-center">
+					<h2 className="text-xl font-bold mb-4">Total Downloads</h2>
+					<p className="text-2xl">{`${totalDL.toLocaleString()}`}</p>
+				</div>
+
+				{/* Card for Most Downloaded */}
+				{mostDownloaded && (
+					<a
+						href={mostDownloaded.releaseUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="p-6 mx-4 w-1/2 bg-white rounded-lg shadow-md hover:shadow-blue-400 transition-all duration-300 ease-in-out flex flex-col justify-center items-center"
+					>
+						<h2 className="text-xl font-bold mb-4">Most Downloaded</h2>
+						<p className=" text-xl font-semibold mb-2">
+							{mostDownloaded.releaseName}
+						</p>
+						<p>{`Downloaded ${mostDownloaded.releaseDownload.toLocaleString()} Times`}</p>
+					</a>
+				)}
 			</div>
+
 			{releaseData.map((release, index) => (
 				// Open a new tab on component click
 				<a
@@ -35,9 +60,7 @@ const ReleaseItem = ({
 									className="flex justify-between items-center"
 								>
 									<span>{asset.assetName}</span>
-									<span className="text-gray-700">
-										{asset.downloadCount} downloads
-									</span>
+									<span>{asset.downloadCount} downloads</span>
 								</li>
 							))}
 						</ul>
