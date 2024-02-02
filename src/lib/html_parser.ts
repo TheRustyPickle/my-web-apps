@@ -1,5 +1,6 @@
 import * as cheerio from "cheerio";
 import { truncateLink } from "./utils";
+import { unstable_noStore as noStore } from 'next/cache';
 
 const tagsToExtract = [
 	{ tag: "img", attribute: "src" },
@@ -15,6 +16,7 @@ const allowedExtensions =
 	/\.(pdf|docx|xlsx|txt|svg|png|jpg|jpeg|webp|mkv|mp4|mp3|gif|bmp|tif|tiff|ico|mp3|wav|ogg|html|htm|css|js|json|zip|rar|tar|gz)(\?.*)?$/i;
 
 export function startParsing(htmlContent: string, link: string) {
+	noStore();
 	const rootUrl = extractRootUrl(link);
 
 	const $ = cheerio.load(htmlContent);

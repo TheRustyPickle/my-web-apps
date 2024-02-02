@@ -3,6 +3,7 @@ import { paginateRest } from "@octokit/plugin-paginate-rest";
 import { getUsernameRepo } from "./utils";
 import { RequestError } from "octokit";
 import { ReleaseData, ReleaseAsset } from "./actions";
+import { unstable_noStore as noStore } from 'next/cache';
 
 /**
  *
@@ -12,6 +13,7 @@ import { ReleaseData, ReleaseAsset } from "./actions";
 export async function fetchReleaseData(
 	repoUrl: string,
 ): Promise<[ReleaseData[], number, ReleaseData | null] | string> {
+	noStore();
 	const usernameRepo = getUsernameRepo(repoUrl);
 
 	if (!usernameRepo) {
