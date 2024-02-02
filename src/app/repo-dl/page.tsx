@@ -37,7 +37,7 @@ export default function Page() {
 					<button
 						type="submit"
 						onClick={handleButtonPress}
-						className={`bg-blue-500 text-white py-2 min-w-28 px-4 my-2 w-1/6 rounded-md hover:bg-blue-600 focus:outline-none transition-all duration-300 ease-in-out${
+						className={`bg-blue-500 text-white py-2 min-w-28 px-4 my-2 w-1/6 rounded-md hover:bg-blue-600 focus:outline-none transition-all duration-300 ease-in-out ${
 							loading ? "opacity-50 cursor-not-allowed" : ""
 						}`}
 						aria-disabled={loading}
@@ -45,7 +45,7 @@ export default function Page() {
 						{!loading ? (
 							"Check Releases"
 						) : (
-							<div className="text-white">
+							<div className="text-white opacity-50 cursor-not-allowed">
 								<RotatingEllipsis />
 							</div>
 						)}
@@ -60,9 +60,11 @@ export default function Page() {
 							mostDownloaded={state.releases.mostDownloaded}
 						/>
 					) : (
-						<div className="text-red-500">
-							<p>{state.message}</p>
-						</div>
+						!loading && (
+							<div className="text-red-500">
+								<p>{state.message}</p>
+							</div>
+						)
 					)}
 				</div>
 			</form>
