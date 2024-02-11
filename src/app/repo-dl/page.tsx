@@ -37,7 +37,7 @@ export default function Page() {
 					<button
 						type="submit"
 						onClick={handleButtonPress}
-						className={`bg-blue-500 text-white py-2 min-w-28 px-4 my-2 w-1/6 rounded-md hover:bg-blue-600 focus:outline-none transition-all duration-300 ease-in-out ${
+						className={`btn btn-md bg-blue-500 hover:bg-blue-600 text-white mt-3 py-2 min-w-28 my-2 w-1/6  ${
 							loading ? "opacity-50 cursor-not-allowed" : ""
 						}`}
 						aria-disabled={loading}

@@ -59,7 +59,7 @@ export default function Page() {
 	return (
 		<div className="container mx-auto">
 			<form action={dispatch}>
-				<div className="flex flex-auto flex-row">
+				<div className="flex flex-row">
 					<input
 						name="linkToCheck"
 						type="text"
@@ -68,7 +68,7 @@ export default function Page() {
 					/>
 					<button
 						type="submit"
-						className={`bg-blue-500 text-white p-2 w-1/12 min-w-20 rounded-r-md hover:bg-blue-600 focus:outline-none transition-all duration-300 ease-in-out ${
+						className={`btn bg-blue-500 hover:bg-blue-600 text-white w-1/12 min-w-20 rounded-none rounded-r-md ${
 							loading ? "opacity-50 cursor-not-allowed" : ""
 						}`}
 						onClick={handleButtonPress}

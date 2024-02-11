@@ -1,9 +1,8 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-	title: "Media Scraper",
-	description:
-		"A scraper that tries to find downloadable content from websites",
+	title: "View Survey",
+	description: "View previous created survey and its results",
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
