@@ -1,20 +1,22 @@
 "use client";
+
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 
 const links = [
-	{ name: "Home", href: "/" },
+	{ name: "Home", href: "/home" },
 	{ name: "Media Scraper", href: "/media-scraper" },
 	{ name: "Repo D/L", href: "/repo-dl" },
+	{ name: "Survey", href: "/survey" },
 ];
 
 const TopNavBar = () => {
 	const pathname = usePathname();
 	return (
 		<>
-			<div className="bg-blue-500 p-3 mb-8">
+			<div className="fixed top-0 left-0 right-0 z-50 bg-blue-500 p-3">
 				<div className="text-white text-lg antialiased mx-5 flex items-center">
 					<div className="hidden sm:block">
 						<a

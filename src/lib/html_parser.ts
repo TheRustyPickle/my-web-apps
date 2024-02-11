@@ -1,6 +1,6 @@
 import * as cheerio from "cheerio";
 import { truncateLink } from "./utils";
-import { unstable_noStore as noStore } from 'next/cache';
+import { unstable_noStore as noStore } from "next/cache";
 
 const tagsToExtract = [
 	{ tag: "img", attribute: "src" },

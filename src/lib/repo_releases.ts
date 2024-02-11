@@ -3,7 +3,7 @@ import { paginateRest } from "@octokit/plugin-paginate-rest";
 import { getUsernameRepo } from "./utils";
 import { RequestError } from "octokit";
 import { ReleaseData, ReleaseAsset } from "./actions";
-import { unstable_noStore as noStore } from 'next/cache';
+import { unstable_noStore as noStore } from "next/cache";
 
 /**
  *
