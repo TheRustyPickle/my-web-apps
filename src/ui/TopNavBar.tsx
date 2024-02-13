@@ -26,7 +26,7 @@ const TopNavBar = () => {
 						>
 							<Image
 								src="my-logo.svg"
-								alt="A green black  R logo"
+								alt="A green black R logo"
 								width="25"
 								height="20"
 							/>
