@@ -5,29 +5,71 @@ import Image, { StaticImageData } from "next/image";
 import scraper from "/public/scraper.png";
 import repo_dl from "/public/repo-dl.png";
 import next_js from "/public/next-js.svg";
+import rex from "/public/rex.png";
+import talon from "/public/talon.png";
+import chirp from "/public/chirp.png";
+import diesel from "/public/diesel.svg";
+import actix from "/public/actix.png";
+import telegram from "/public/telegram.svg";
+import gtk from "/public/gtk.svg";
+import octokit from "/public/octokit.png";
+import postgresql from "/public/postgresql.svg";
+import puppeteer from "/public/puppeteer.svg";
+import rust from "/public/rust.svg";
+import sqlite from "/public/sqlite.svg";
+import tailwind from "/public/tailwind.svg";
+import typescript from "/public/typescript.svg";
+import daisyui from "/public/daisyui.png";
+import ratatui from "/public/ratatui.png";
+import encryption from "/public/ency.svg";
+import terminal from "/public/terminal.svg";
+import gui from "/public/gui.svg";
+import websocket from "/public/websocket.svg";
+import egui from "/public/egui.png";
 
-const badgeStyles: Record<string, string> = {
-    Typescript: "bg-blue-500 text-white",
-    NextJS: "bg-gray-300 text-black",
-    DaisyUI: "bg-purple-500 text-white",
-    TailwindCSS: "bg-teal-500 text-white",
-    Rust: "bg-orange-600 text-white",
-    ActixWeb: "bg-indigo-500 text-white",
-    diesel: "bg-gray-700 text-white",
-    Octokit: "bg-blue-600 text-white",
-    Puppeteer: "bg-green-500 text-white",
-    GTK4: "bg-yellow-500 text-black",
-    egui: "bg-yellow-500 text-black",
-    ratatui: "bg-pink-500 text-white",
-    Encryption: "bg-gray-500 text-white",
-    Websocket: "bg-indigo-700 text-white",
-    SQLite: "bg-indigo-500 text-white",
-    Terminal: "bg-gray-800 text-white",
-    GUI: "bg-green-600 text-white",
-    Telegram: "bg-blue-400 text-white",
-    PostgreSQL: "bg-blue-500 text-white"
+const badgeImages: Record<string, StaticImageData> = {
+	NextJS: next_js,
+	diesel: diesel,
+	ActixWeb: actix,
+	Telegram: telegram,
+	Typescript: typescript,
+	TailwindCSS: tailwind,
+	Octokit: octokit,
+	Puppeteer: puppeteer,
+	GTK4: gtk,
+	ratatui: ratatui,
+	SQLite: sqlite,
+	PostgreSQL: postgresql,
+	DaisyUI: daisyui,
+	Rust: rust,
+	Encryption: encryption,
+	Websocket: websocket,
+	Terminal: terminal,
+	GUI: gui,
+	egui: egui,
 };
 
+const badgeStyles: Record<string, string> = {
+	Typescript: "bg-blue-400 text-white",
+	NextJS: "bg-gray-500 text-white",
+	DaisyUI: "bg-purple-800 text-white",
+	TailwindCSS: "bg-sky-600 text-white",
+	Rust: "bg-orange-500 text-black",
+	ActixWeb: "bg-indigo-500 text-white",
+	diesel: "bg-gray-700 text-white",
+	Octokit: "bg-red-600 text-white",
+	Puppeteer: "bg-green-500 text-white",
+	GTK4: "bg-teal-500 text-black",
+	egui: "bg-sky-400 text-black",
+	ratatui: "bg-neutral-500 text-white",
+	Encryption: "bg-purple-600 text-white",
+	Websocket: "bg-emerald-600 text-white",
+	SQLite: "bg-indigo-600 text-white",
+	Terminal: "bg-amber-400 text-black",
+	GUI: "bg-green-600 text-black",
+	Telegram: "bg-blue-300 text-black",
+	PostgreSQL: "bg-blue-500 text-white",
+};
 
 type Project = {
 	id: string;
@@ -71,9 +113,10 @@ const projects: Project[] = [
 	{
 		id: "slide3",
 		title: "Rex",
-		image: repo_dl,
+		image: rex,
 		alt: "Screenshot of Repo D/L app",
-		description: "A TUI app for managing Incomes and Expenses",
+		description:
+			"A cross-platform TUI app for managing Incomes and Expenses that comes with charts and summary pages",
 		link: "",
 		source: "https://github.com/TheRustyPickle/Rex",
 		badges: ["Rust", "ratatui", "Terminal", "SQLite"],
@@ -83,10 +126,10 @@ const projects: Project[] = [
 	{
 		id: "slide4",
 		title: "Talon",
-		image: repo_dl,
+		image: talon,
 		alt: "Screenshot of Talon app",
 		description:
-			"Talon is a tool to generate on-demand data insights from public Telegram chats including charts, user table and more",
+			"Talon is a tool to generate on-demand data insights from public Telegram chats including charts, user table and more using Telegram account API",
 		link: "",
 		source: "https://github.com/TheRustyPickle/Talon",
 		badges: ["Rust", "egui", "GUI", "Telegram"],
@@ -96,10 +139,10 @@ const projects: Project[] = [
 	{
 		id: "slide5",
 		title: "Chirp",
-		image: repo_dl,
+		image: chirp,
 		alt: "Screenshot of Chirp app",
 		description:
-			"A Rust based GTK4 chatting app created from scratch with a custom server and built-in encryption support with RSA and AES",
+			"A GTK4 based chatting app created from scratch with Rust with a custom server and built-in encryption support with RSA and AES",
 		link: "",
 		source: "https://github.com/TheRustyPickle/Chirp",
 		badges: [
@@ -110,7 +153,7 @@ const projects: Project[] = [
 			"GUI",
 			"Encryption",
 			"Websocket",
-			"PostgreSQL"
+			"PostgreSQL",
 		],
 		next: "#slide1",
 		prev: "#slide4",
@@ -130,13 +173,16 @@ export default function Home() {
 				</p>
 			</div>
 
+			{/* Start of the carousel */}
 			<div className="carousel w-full">
 				{projects.map((project) => (
+					// A carousel item for each of the projects
 					<div
 						key={project.id}
 						id={project.id}
 						className="carousel-item relative w-full justify-center items-center flex"
 					>
+						{/* The card inside the carousel */}
 						<div className="card w-auto bg-base-100 shadow-lg justify-center items-center flex m-5 hover:shadow-blue-400 transition-all duration-300 ease-in-out">
 							<figure className="px-10 pt-10">
 								<Image
@@ -145,17 +191,22 @@ export default function Home() {
 									className="rounded-xl"
 								/>
 							</figure>
-							<div className="mt-3">
+							{/* add the badges after the image of the project */}
+							<div className="mt-3 flex items-center">
 								{project.badges.map((badge) => (
 									<div
 										key={project.id}
-										className={`badge badge-info gap-2 ${badgeStyles[badge]}`}
+										className={`badge badge-info mx-0.5 gap-1 ${badgeStyles[badge]}`}
 									>
-										{/* <Image src={next_js} width="20" alt="s"/> */}
+										{/* Add an image beside the badge if it exists */}
+										{badgeImages[badge] && (
+											<Image src={badgeImages[badge]} width="20" alt="logo" />
+										)}
 										{badge}
 									</div>
 								))}
 							</div>
+							{/* Project description */}
 							<div className="card-body justify-center items-center flex">
 								<h2 className="card-title">{project.title}</h2>
 								<p className="text-base">{project.description}</p>
@@ -165,7 +216,7 @@ export default function Home() {
 											href={project.link}
 											className="btn btn-md bg-blue-500 hover:bg-blue-600 text-white mx-5"
 										>
-											Check App
+											Try It Online
 										</a>
 									)}
 									<a
@@ -178,6 +229,7 @@ export default function Home() {
 							</div>
 						</div>
 
+						{/* Arrow icons for going left and right */}
 						<div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
 							<a href={project.prev} className="btn btn-circle">
 								❮
