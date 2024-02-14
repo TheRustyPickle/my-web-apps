@@ -183,7 +183,7 @@ export default function Home() {
 						className="carousel-item relative w-full justify-center items-center flex"
 					>
 						{/* The card inside the carousel */}
-						<div className="card w-auto bg-base-100 shadow-lg justify-center items-center flex m-5 hover:shadow-blue-400 transition-all duration-300 ease-in-out">
+						<div className="card w-auto bg-base-100 shadow-xl justify-center items-center flex m-5 hover:shadow-blue-400 transition-all duration-300 ease-in-out">
 							<figure className="px-10 pt-10">
 								<Image
 									src={project.image}
