@@ -1,4 +1,4 @@
-import puppeteer from "puppeteer";
+import puppeteer, { Browser, Page } from "puppeteer";
 
 const MAX_LINK_LENGTH = 50;
 
@@ -38,18 +38,28 @@ export async function getHTMLContent(
 	waitTime: number,
 	navigationTime: number,
 ) {
-	const browser = await puppeteer.launch({
-		headless: "new",
-	});
-	const page = await browser.newPage();
-
-	await page.setViewport({
-		width: 1920,
-		height: 1080,
-	});
-
 	let pageContent = "";
 	let failedAction = false;
+
+	let page: Page;
+	let browser: Browser;
+
+	// Can error when running on a server like on vercel
+	try {
+		browser = await puppeteer.launch({
+			headless: "new",
+		});
+		page = await browser.newPage();
+
+		await page.setViewport({
+			width: 1920,
+			height: 1080,
+		});
+	} catch (err) {
+		failedAction = true;
+		pageContent = "Failed to create a browser tab.";
+		return { htmlContent: pageContent, failedAction: failedAction };
+	}
 
 	try {
 		await page.goto(url, { timeout: navigationTime * 1000 });

@@ -5,9 +5,16 @@ import Image, { StaticImageData } from "next/image";
 import scraper from "/public/scraper.png";
 import repo_dl from "/public/repo-dl.png";
 import next_js from "/public/next-js.svg";
-import rex from "/public/rex.png";
-import talon from "/public/talon.png";
-import chirp from "/public/chirp.png";
+import rex_1 from "/public/rex_1.png";
+import rex_2 from "/public/rex_2.png";
+import rex_3 from "/public/rex_3.png";
+import rex_4 from "/public/rex_4.png";
+import rex_5 from "/public/rex_5.png";
+import talon_1 from "/public/talon_1.png";
+import talon_2 from "/public/talon_2.png";
+import talon_3 from "/public/talon_3.png";
+import chirp_1 from "/public/chirp_1.png";
+import chirp_2 from "/public/chirp_2.png";
 import diesel from "/public/diesel.svg";
 import actix from "/public/actix.png";
 import telegram from "/public/telegram.svg";
@@ -74,7 +81,7 @@ const badgeStyles: Record<string, string> = {
 type Project = {
 	id: string;
 	title: string;
-	image: StaticImageData;
+	images: StaticImageData[];
 	alt: string;
 	description: string;
 	link: string;
@@ -88,7 +95,7 @@ const projects: Project[] = [
 	{
 		id: "slide1",
 		title: "Media Scraper",
-		image: scraper,
+		images: [scraper],
 		alt: "Screenshot of Media Scraper app",
 		description:
 			"A tool that allows you to scrape downloadable contents such as images, videos, pdf from websites.",
@@ -101,7 +108,7 @@ const projects: Project[] = [
 	{
 		id: "slide2",
 		title: "Repo D/L",
-		image: repo_dl,
+		images: [repo_dl],
 		alt: "Screenshot of Repo D/L app",
 		description: "A tool to check download data of Github repository releases",
 		link: "/repo-dl",
@@ -113,7 +120,7 @@ const projects: Project[] = [
 	{
 		id: "slide3",
 		title: "Rex",
-		image: rex,
+		images: [rex_1, rex_2, rex_3, rex_4, rex_5],
 		alt: "Screenshot of Repo D/L app",
 		description:
 			"A cross-platform TUI app for managing Incomes and Expenses that comes with charts and summary pages",
@@ -126,7 +133,7 @@ const projects: Project[] = [
 	{
 		id: "slide4",
 		title: "Talon",
-		image: talon,
+		images: [talon_1, talon_2, talon_3],
 		alt: "Screenshot of Talon app",
 		description:
 			"Talon is a tool to generate on-demand data insights from public Telegram chats including charts, user table and more using Telegram account API",
@@ -139,7 +146,7 @@ const projects: Project[] = [
 	{
 		id: "slide5",
 		title: "Chirp",
-		image: chirp,
+		images: [chirp_1, chirp_2],
 		alt: "Screenshot of Chirp app",
 		description:
 			"A GTK4 based chatting app created from scratch with Rust with a custom server and built-in encryption support with RSA and AES",
@@ -175,6 +182,34 @@ export default function Home() {
 
 			{/* Start of the carousel */}
 			<div className="carousel w-full">
+				{/* The initial card that is to be shown when the Home page is opened. It won't show up again while cycling the cards */}
+				<div className="carousel-item relative w-full justify-center items-center flex">
+					<div className="card w-auto h-1/4 bg-base-100 shadow-xl justify-center items-center flex m-5 hover:shadow-blue-400 transition-all duration-300 ease-in-out">
+						<div className="card-body justify-center items-center flex">
+							<p className="text-base">
+								Cycle through to see to some of the projects that I have worked
+								on
+							</p>
+							<a
+								href="https://github.com/TheRustyPickle"
+								className="btn btn-md bg-blue-500 hover:bg-blue-600 text-white mx-5"
+							>
+								Check My Github
+							</a>
+						</div>
+					</div>
+					<div className="absolute flex justify-end transform -translate-y-1/2 right-5 top-1/2">
+						<a href="#slide1" className="btn btn-circle">
+							❯
+						</a>
+					</div>
+					<div className="absolute flex justify-start transform -translate-y-1/2 left-5 top-1/2">
+						<a href="#slide5" className="btn btn-circle">
+							❮
+						</a>
+					</div>
+				</div>
+
 				{projects.map((project) => (
 					// A carousel item for each of the projects
 					<div
@@ -183,16 +218,44 @@ export default function Home() {
 						className="carousel-item relative w-full justify-center items-center flex"
 					>
 						{/* The card inside the carousel */}
-						<div className="card w-auto bg-base-100 shadow-xl justify-center items-center flex m-5 hover:shadow-blue-400 transition-all duration-300 ease-in-out">
-							<figure className="px-10 pt-10">
-								<Image
-									src={project.image}
-									alt={project.alt}
-									className="rounded-xl"
-								/>
-							</figure>
+						<div className="card w-auto lg:w-3/5 shadow-xl justify-center items-center flex m-5 hover:shadow-blue-400 transition-all duration-300 ease-in-out">
+							{/* A carousel inside carousel that for cycling through the images */}
+							<div className="carousel">
+								{project.images.map((image, index) => (
+									<div
+										key={`${project.id}_index_${index}`}
+										className="carousel-item relative w-full justify-center items-center flex"
+										id={`${project.id}_item_${index + 1}`}
+									>
+										<figure>
+											<Image
+												src={image}
+												alt={project.alt}
+												className="rounded-xl"
+												height={400}
+												quality={100}
+											/>
+										</figure>
+									</div>
+								))}
+							</div>
+							{/* If there are multiple images add x amount of buttons to cycle through the images*/}
+							{project.images.length > 1 && (
+								<div className="flex justify-center w-full py-2 gap-2">
+									{project.images.map((image, index) => (
+										<a
+											key={`${project.id}_button_index_${index}`}
+											href={`#${project.id}_item_${index + 1}`}
+											className="btn btn-xs"
+										>
+											{index + 1}
+										</a>
+									))}
+								</div>
+							)}
+
 							{/* add the badges after the image of the project */}
-							<div className="mt-3 flex items-center">
+							<div className="mt-3 flex flex-wrap items-center justify-center">
 								{project.badges.map((badge) => (
 									<div
 										key={project.id}
@@ -200,7 +263,12 @@ export default function Home() {
 									>
 										{/* Add an image beside the badge if it exists */}
 										{badgeImages[badge] && (
-											<Image src={badgeImages[badge]} width="20" alt="logo" />
+											<Image
+												src={badgeImages[badge]}
+												width="20"
+												alt="logo"
+												key={project.id}
+											/>
 										)}
 										{badge}
 									</div>
@@ -230,12 +298,14 @@ export default function Home() {
 						</div>
 
 						{/* Arrow icons for going left and right */}
-						<div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-							<a href={project.prev} className="btn btn-circle">
-								❮
-							</a>
+						<div className="absolute flex justify-end transform -translate-y-1/2 right-5 top-1/2">
 							<a href={project.next} className="btn btn-circle">
 								❯
+							</a>
+						</div>
+						<div className="absolute flex justify-start transform -translate-y-1/2 left-5 top-1/2">
+							<a href={project.prev} className="btn btn-circle">
+								❮
 							</a>
 						</div>
 					</div>
