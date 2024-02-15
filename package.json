@@ -11,6 +11,7 @@
   "dependencies": {
     "@octokit/plugin-paginate-rest": "^9.1.5",
     "@octokit/request-error": "^5.0.1",
+    "@vercel/analytics": "^1.1.4",
     "cheerio": "^1.0.0-rc.12",
     "clsx": "^2.1.0",
     "htmlparser2": "^9.1.0",
