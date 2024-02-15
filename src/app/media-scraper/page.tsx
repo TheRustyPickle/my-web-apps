@@ -15,7 +15,10 @@ export default function Page() {
 	const [navigationTime, setNavigationTime] = useState(30);
 	const [errorCount, setErrorCount] = useState(0);
 
-	const initialState: ParserState = { message: null };
+	const initialState: ParserState = {
+		message:
+			"This app does not work in deployed version! Know how to ship puppeteer on the platform? Send a PR!",
+	};
 	const [state, dispatch] = useFormState(checkLink, initialState);
 
 	// On button submit show the processing message + remove the previous error message
@@ -29,8 +32,12 @@ export default function Page() {
 
 		// Show up the config if failed to get content 2 times in a row
 		if (state.message) {
-			// Empty link/input form will not be considered
-			if (state.message !== "Link cannot be empty.") {
+			// These error messages won't be considered as failed attempts
+			if (
+				state.message !== "Link cannot be empty." &&
+				!state.message.includes("Failed to create a browser") &&
+				!state.message.includes("does not work in deployed version")
+			) {
 				setErrorCount((count) => {
 					const new_val = count + 1;
 					if (new_val >= 2) {
