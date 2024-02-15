@@ -13,7 +13,7 @@ const projectLinks = [
 const mainLinks = [
 	{ name: "Home", href: "/home" },
 	{ name: "Projects", href: "Nowhere" },
-	{ name: "Contact Me", href: "/contact" },
+	{ name: "About", href: "/about" },
 ];
 
 export default function NavBar() {
@@ -98,8 +98,8 @@ export default function NavBar() {
 						{/* Create a menu item with the projects if Projects value or just a normal link button */}
 						{link.name === "Projects" ? (
 							<ul className="menu menu-horizontal">
-								<li className="">
-									<details className="">
+								<li>
+									<details>
 										<summary className="text-base hover:text-red-300 hover:bg-blue-600 transition duration-300 px-3 py-2 rounded-lg">
 											{link.name}
 										</summary>
