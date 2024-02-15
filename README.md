@@ -4,7 +4,7 @@
 
 # What is this?
 
-This repository contains a collection of web applications I developed using [NextJS](https://nextjs.org/), [Tailwind CSS](https://tailwindcss.com/), and [TypeScript](https://www.typescriptlang.org/). Currently, web apps are not hosted anywhere.
+This repository contains a collection of web applications I developed using [NextJS](https://nextjs.org/), [Tailwind CSS](https://tailwindcss.com/), and [TypeScript](https://www.typescriptlang.org/), hosted on [Vercel](https://vercel.com/).
 
 ## Getting Started
 
