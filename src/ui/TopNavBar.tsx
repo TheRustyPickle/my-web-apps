@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 const projectLinks = [
 	{ name: "Media Scraper", href: "/media-scraper" },
 	{ name: "Repo D/L", href: "/repo-dl" },
-	{ name: "Survey", href: "/survey" },
+	// { name: "Survey", href: "/survey" },
 ];
 
 const mainLinks = [
