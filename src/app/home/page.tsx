@@ -33,6 +33,7 @@ import terminal from "/public/terminal.svg";
 import gui from "/public/gui.svg";
 import websocket from "/public/websocket.svg";
 import egui from "/public/egui.png";
+import { useRef } from "react";
 
 const badgeImages: Record<string, StaticImageData> = {
 	NextJS: next_js,
@@ -87,8 +88,6 @@ type Project = {
 	link: string;
 	source: string;
 	badges: string[];
-	next: string;
-	prev: string;
 };
 
 const projects: Project[] = [
@@ -102,8 +101,6 @@ const projects: Project[] = [
 		link: "/media-scraper",
 		source: "https://github.com/TheRustyPickle/my-web-apps",
 		badges: ["Typescript", "NextJS", "TailwindCSS", "DaisyUI", "Puppeteer"],
-		next: "#slide2",
-		prev: "#slide5",
 	},
 	{
 		id: "slide2",
@@ -114,8 +111,6 @@ const projects: Project[] = [
 		link: "/repo-dl",
 		source: "https://github.com/TheRustyPickle/my-web-apps",
 		badges: ["Typescript", "NextJS", "TailwindCSS", "DaisyUI", "Octokit"],
-		next: "#slide3",
-		prev: "#slide1",
 	},
 	{
 		id: "slide3",
@@ -127,8 +122,6 @@ const projects: Project[] = [
 		link: "",
 		source: "https://github.com/TheRustyPickle/Rex",
 		badges: ["Rust", "ratatui", "Terminal", "SQLite"],
-		next: "#slide4",
-		prev: "#slide2",
 	},
 	{
 		id: "slide4",
@@ -140,8 +133,6 @@ const projects: Project[] = [
 		link: "",
 		source: "https://github.com/TheRustyPickle/Talon",
 		badges: ["Rust", "egui", "GUI", "Telegram"],
-		next: "#slide5",
-		prev: "#slide3",
 	},
 	{
 		id: "slide5",
@@ -162,12 +153,25 @@ const projects: Project[] = [
 			"Websocket",
 			"PostgreSQL",
 		],
-		next: "#slide1",
-		prev: "#slide4",
 	},
 ];
 
 export default function Home() {
+	const carouselRef = useRef<HTMLDivElement>(null);
+
+	const scrollLeft = () => {
+		carouselRef.current?.scrollBy({
+			left: -100,
+			behavior: "smooth",
+		});
+	};
+
+	const scrollRight = () => {
+		carouselRef.current?.scrollBy({
+			left: 100,
+			behavior: "smooth",
+		});
+	};
 	return (
 		<div className="container mx-auto">
 			<div className="flex flex-col justify-center items-center">
@@ -181,7 +185,7 @@ export default function Home() {
 			</div>
 
 			{/* Start of the carousel */}
-			<div className="carousel w-full">
+			<div className="carousel w-full" ref={carouselRef}>
 				{/* The initial card that is to be shown when the Home page is opened. It won't show up again while cycling the cards */}
 				<div className="carousel-item relative w-full justify-center items-center flex">
 					<div className="card w-auto h-1/4 bg-base-100 shadow-xl justify-center items-center flex m-5 hover:shadow-blue-400 transition-all duration-300 ease-in-out">
@@ -199,14 +203,13 @@ export default function Home() {
 						</div>
 					</div>
 					<div className="absolute flex justify-end transform -translate-y-1/2 right-5 top-1/2">
-						<a href="#slide1" className="btn btn-circle">
+						<button
+							onClick={scrollRight}
+							className="btn btn-circle"
+							type="button"
+						>
 							❯
-						</a>
-					</div>
-					<div className="absolute flex justify-start transform -translate-y-1/2 left-5 top-1/2">
-						<a href="#slide5" className="btn btn-circle">
-							❮
-						</a>
+						</button>
 					</div>
 				</div>
 
@@ -218,7 +221,7 @@ export default function Home() {
 						className="carousel-item relative w-full justify-center items-center flex"
 					>
 						{/* The card inside the carousel */}
-						<div className="card w-auto lg:w-3/5 shadow-xl justify-center items-center flex m-5 hover:shadow-blue-400 transition-all duration-300 ease-in-out">
+						<div className="card w-auto lg:w-3/5 shadow-md justify-center items-center flex m-5 hover:shadow-blue-400 hover:shadow-xl transition-all duration-300 ease-in-out">
 							{/* A carousel inside carousel that for cycling through the images */}
 							<div className="carousel">
 								{project.images.map((image, index) => (
@@ -256,9 +259,9 @@ export default function Home() {
 
 							{/* add the badges after the image of the project */}
 							<div className="mt-3 flex flex-wrap items-center justify-center">
-								{project.badges.map((badge) => (
+								{project.badges.map((badge, index) => (
 									<div
-										key={project.id}
+										key={`${project.id}_badge_index_${index}`}
 										className={`badge badge-info mx-0.5 gap-1 ${badgeStyles[badge]}`}
 									>
 										{/* Add an image beside the badge if it exists */}
@@ -299,14 +302,37 @@ export default function Home() {
 
 						{/* Arrow icons for going left and right */}
 						<div className="absolute flex justify-end transform -translate-y-1/2 right-5 top-1/2">
-							<a href={project.next} className="btn btn-circle">
-								❯
-							</a>
+							{project.id === projects[projects.length - 1].id ? (
+								<a href={`#${projects[0].id}`} className="btn btn-circle">
+									❯
+								</a>
+							) : (
+								<button
+									onClick={scrollRight}
+									className="btn btn-circle"
+									type="button"
+								>
+									❯
+								</button>
+							)}
 						</div>
 						<div className="absolute flex justify-start transform -translate-y-1/2 left-5 top-1/2">
-							<a href={project.prev} className="btn btn-circle">
-								❮
-							</a>
+							{project.id === projects[0].id ? (
+								<a
+									href={`#${projects[projects.length - 1].id}`}
+									className="btn btn-circle"
+								>
+									❮
+								</a>
+							) : (
+								<button
+									onClick={scrollLeft}
+									className="btn btn-circle"
+									type="button"
+								>
+									❮
+								</button>
+							)}
 						</div>
 					</div>
 				))}
