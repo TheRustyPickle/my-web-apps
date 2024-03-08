@@ -3,6 +3,7 @@
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState, useRef, useEffect } from "react";
 
 const projectLinks = [
 	{ name: "Media Scraper", href: "/media-scraper" },
@@ -18,6 +19,30 @@ const mainLinks = [
 
 export default function NavBar() {
 	const pathname = usePathname();
+	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+	const toggleDropdown = () => {
+		setIsDropdownOpen(!isDropdownOpen);
+	};
+
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			const dropdown = document.querySelector(".dropdown");
+			if (dropdown && !dropdown.contains(event.target as Node)) {
+				setIsDropdownOpen(false);
+			}
+		};
+
+		if (isDropdownOpen) {
+			document.addEventListener("mousedown", handleClickOutside);
+		} else {
+			document.removeEventListener("mousedown", handleClickOutside);
+		}
+
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, [isDropdownOpen]);
 	return (
 		// keep the navbar stuck to the top of the page
 		<div className="navbar fixed top-0 left-0 right-0 z-50">
@@ -29,6 +54,7 @@ export default function NavBar() {
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							className="h-5 w-5"
+							onMouseDown={toggleDropdown}
 							fill="none"
 							viewBox="0 0 24 24"
 							stroke="currentColor"
@@ -43,52 +69,55 @@ export default function NavBar() {
 						</svg>
 					</div>
 					{/* Content of the menu button */}
-					<ul className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-						{mainLinks.map((link) => (
-							<div key={`index_${link.href}`}>
-								{/* If the value is Projects crete the collapsing menu or just a regular Link button */}
-								{link.name === "Projects" ? (
-									<div className="collapse collapse-arrow">
-										<input type="checkbox" />
-										<div className="collapse-title flex item-center justify-center">
-											Projects
+					{isDropdownOpen && (
+						<ul className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+							{mainLinks.map((link) => (
+								<div key={`index_${link.href}`}>
+									{/* If the value is Projects crete the collapsing menu or just a regular Link button */}
+									{link.name === "Projects" ? (
+										<div className="collapse collapse-arrow">
+											<input type="checkbox" />
+											<div className="collapse-title flex item-center justify-center">
+												Projects
+											</div>
+											<div className="collapse-content">
+												{projectLinks.map((link) => (
+													<Link
+														key={`index_${link.href}`}
+														href={link.href}
+														className={clsx(
+															"p-2 m-1 flex justify-center hover:bg-blue-600 transition duration-300 rounded-lg",
+															{
+																"font-bold text-red-300":
+																	pathname === link.href,
+															},
+															{
+																"hover:text-white": pathname !== link.href,
+															},
+														)}
+													>
+														{link.name}
+													</Link>
+												))}
+											</div>
 										</div>
-										<div className="collapse-content">
-											{projectLinks.map((link) => (
-												<Link
-													key={`index_${link.href}`}
-													href={link.href}
-													className={clsx(
-														"p-2 m-1 flex justify-center hover:bg-blue-600 transition duration-300 rounded-lg",
-														{
-															"font-bold text-red-300": pathname === link.href,
-														},
-														{
-															"hover:text-white": pathname !== link.href,
-														},
-													)}
-												>
-													{link.name}
-												</Link>
-											))}
-										</div>
-									</div>
-								) : (
-									<Link
-										href={link.href}
-										className={clsx(
-											"flex flex-grow justify-center hover:bg-blue-600 hover:text-red-300 transition duration-300 px-2 py-2 rounded-lg",
-											{
-												"font-bold text-red-300": pathname === link.href,
-											},
-										)}
-									>
-										{link.name}
-									</Link>
-								)}
-							</div>
-						))}
-					</ul>
+									) : (
+										<Link
+											href={link.href}
+											className={clsx(
+												"flex flex-grow justify-center hover:bg-blue-600 hover:text-red-300 transition duration-300 px-2 py-2 rounded-lg",
+												{
+													"font-bold text-red-300": pathname === link.href,
+												},
+											)}
+										>
+											{link.name}
+										</Link>
+									)}
+								</div>
+							))}
+						</ul>
+					)}
 				</div>
 			</div>
 			{/* For when in a large display */}
