@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const projectLinks = [
 	{ name: "Media Scraper", href: "/media-scraper" },
@@ -20,10 +20,35 @@ const mainLinks = [
 export default function NavBar() {
 	const pathname = usePathname();
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+	const [detailsOpen, setDetailsOpen] = useState(false);
+
+	// biome-ignore lint/suspicious/noExplicitAny: Shut it linter
+	const toggleDetails = (event: any) => {
+		event.preventDefault();
+		setDetailsOpen(!detailsOpen);
+	};
 
 	const toggleDropdown = () => {
 		setIsDropdownOpen(!isDropdownOpen);
 	};
+
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			const dropdown = document.querySelector("details");
+			if (dropdown && !dropdown.contains(event.target as Node)) {
+				setDetailsOpen(false);
+			}
+		};
+		if (detailsOpen) {
+			document.addEventListener("mousedown", handleClickOutside);
+		} else {
+			document.removeEventListener("mousedown", handleClickOutside);
+		}
+
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, [detailsOpen]);
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -128,8 +153,17 @@ export default function NavBar() {
 						{link.name === "Projects" ? (
 							<ul className="menu menu-horizontal">
 								<li>
-									<details>
-										<summary className="text-base hover:text-red-300 hover:bg-blue-600 transition duration-300 px-3 py-2 rounded-lg">
+									<details open={detailsOpen}>
+										<summary
+											className="text-base hover:text-red-300 hover:bg-blue-600 transition duration-300 px-3 py-2 rounded-lg"
+											onClick={toggleDetails}
+											onKeyDown={(event) => {
+												if (event.key === "Enter" || event.key === " ") {
+													toggleDetails(event);
+												}
+											}}
+											tabIndex={0}
+										>
 											{link.name}
 										</summary>
 										<ul className="p-2 text-black">
