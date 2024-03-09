@@ -178,7 +178,7 @@ export default function Home() {
 				<h1 className="text-3xl font-bold mb-4">
 					Welcome to my site of Web Apps
 				</h1>
-				<p className="text-lg">
+				<p className="text-lgmenu">
 					Explore a collection of applications developed by me using various
 					technologies
 				</p>
@@ -281,18 +281,18 @@ export default function Home() {
 							<div className="card-body justify-center items-center flex">
 								<h2 className="card-title">{project.title}</h2>
 								<p className="text-base">{project.description}</p>
-								<div>
+								<div className="flex flex-col md:flex-row md:space-x-5">
 									{project.link && (
 										<a
 											href={project.link}
-											className="btn btn-md bg-blue-500 hover:bg-blue-600 text-white mx-5"
+											className="btn btn-md bg-blue-500 hover:bg-blue-600 text-white mx-0 md:mx-5 mb-2 md:mb-0 w-full md:w-auto"
 										>
 											Try It Online
 										</a>
 									)}
 									<a
 										href={project.source}
-										className="btn btn-md bg-blue-500 hover:bg-blue-600 text-white mx-5"
+										className="btn btn-md bg-blue-500 hover:bg-blue-600 text-white mx-0 md:mx-5 w-full md:w-auto"
 									>
 										Source Code
 									</a>
