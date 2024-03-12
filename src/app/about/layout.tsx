@@ -5,5 +5,5 @@ export const metadata: Metadata = {
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-	return <div className="absolute inset-x-0 top-20">{children}</div>;
+	return <div className="absolute inset-x-0">{children}</div>;
 }
