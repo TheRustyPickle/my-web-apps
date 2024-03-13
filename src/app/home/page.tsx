@@ -178,7 +178,7 @@ export default function Home() {
 				<h1 className="text-3xl font-bold mb-4">
 					Welcome to my site of Web Apps
 				</h1>
-				<p className="text-lgmenu">
+				<p className="text-lg">
 					Explore a collection of applications developed by me using various
 					technologies
 				</p>

@@ -11,11 +11,11 @@ const ReleaseItem = ({
 	mostDownloaded: ReleaseData | null;
 }) => {
 	return (
-		<div className="w-3/5">
+		<div className="md:w-3/5 w-auto">
 			{/* Top Component showing total download */}
-			<div className="flex justify-center text-center text-gray-700">
+			<div className="flex justify-center text-center text-gray-700 flex-col md:flex-row gap-4 md:gap-4">
 				{/* Card for Total Downloads */}
-				<div className="p-6 mx-4 w-1/2 bg-white rounded-lg shadow-md hover:shadow-blue-400 transition-all duration-300 ease-in-out flex flex-col justify-center items-center">
+				<div className="p-6 w-auto md:w-1/2 bg-white rounded-lg shadow-md hover:shadow-blue-400 transition-all duration-300 ease-in-out flex flex-col justify-center items-center">
 					<h2 className="text-xl font-bold mb-4">Total Downloads</h2>
 					<p className="text-2xl">{`${totalDL.toLocaleString()}`}</p>
 				</div>
@@ -26,7 +26,7 @@ const ReleaseItem = ({
 						href={mostDownloaded.releaseUrl}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="p-6 mx-4 w-1/2 bg-white rounded-lg shadow-md hover:shadow-blue-400 transition-all duration-300 ease-in-out flex flex-col justify-center items-center"
+						className="p-6 w-auto md:w-1/2 bg-white rounded-lg shadow-md hover:shadow-blue-400 transition-all duration-300 ease-in-out flex flex-col justify-center items-center"
 					>
 						<h2 className="text-xl font-bold mb-4">Most Downloaded</h2>
 						<p className=" text-xl font-semibold mb-2">
@@ -46,7 +46,7 @@ const ReleaseItem = ({
 					rel="noopener noreferrer"
 				>
 					{/* Each release component */}
-					<div className="text-gray-700 m-4 p-6 bg-white rounded-lg shadow-md cursor-pointer hover:shadow-blue-400 transition-all duration-300 ease-in-out">
+					<div className="text-gray-700 my-2 p-6 bg-white rounded-lg shadow-md cursor-pointer hover:shadow-blue-400 transition-all duration-300 ease-in-out">
 						<h2 className="text-xl font-bold mb-4">{release.releaseName}</h2>
 						<p>
 							Published at: {new Date(release.publishedAt).toLocaleDateString()}
