@@ -159,6 +159,8 @@ const projects: Project[] = [
 export default function Home() {
 	const carouselRef = useRef<HTMLDivElement>(null);
 
+	// Simulates scrolling left side horizontally
+	// Used for scrolling the main slide
 	const scrollLeft = () => {
 		carouselRef.current?.scrollBy({
 			left: -100,
@@ -166,11 +168,24 @@ export default function Home() {
 		});
 	};
 
+	// Simulates scrolling right side horizontally
+	// Used for scrolling the main slide
 	const scrollRight = () => {
 		carouselRef.current?.scrollBy({
 			left: 100,
 			behavior: "smooth",
 		});
+	};
+
+	// Get the element by the id attribute that is passed to the function
+	// and scroll to that element. Used for slides inside the main slide
+	const scrollToSlide = (slide_link: string) => {
+		const targetElement = document.getElementById(slide_link);
+
+		// Scroll to the target element. Taken from stackoverflow
+		if (targetElement) {
+			targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
+		}
 	};
 	return (
 		<div className="container mx-auto">
@@ -202,6 +217,7 @@ export default function Home() {
 							</a>
 						</div>
 					</div>
+					{/* The very initial slide. It will only have one button to go right side */}
 					<div className="absolute flex justify-end transform -translate-y-1/2 right-5 top-1/2">
 						<button
 							onClick={scrollRight}
@@ -212,7 +228,7 @@ export default function Home() {
 						</button>
 					</div>
 				</div>
-
+				{/* Start of project slide */}
 				{projects.map((project) => (
 					// A carousel item for each of the projects
 					<div
@@ -242,17 +258,22 @@ export default function Home() {
 									</div>
 								))}
 							</div>
-							{/* If there are multiple images add x amount of buttons to cycle through the images*/}
+							{/* If there are multiple images add x amount of buttons to cycle through the images */}
 							{project.images.length > 1 && (
+								// There are more than 1 image. Loop through each, get the index. index + 1 is the image number button
 								<div className="flex justify-center w-full py-2 gap-2">
 									{project.images.map((image, index) => (
-										<a
+										// Anchor tag does not work. Have to do the scrolling manually by checking button press
+										<button
 											key={`${project.id}_button_index_${index}`}
-											href={`#${project.id}_item_${index + 1}`}
+											onClick={() =>
+												scrollToSlide(`${project.id}_item_${index + 1}`)
+											}
+											type="button"
 											className="btn btn-xs"
 										>
 											{index + 1}
-										</a>
+										</button>
 									))}
 								</div>
 							)}
@@ -282,6 +303,7 @@ export default function Home() {
 								<h2 className="card-title">{project.title}</h2>
 								<p className="text-base">{project.description}</p>
 								<div className="flex flex-col md:flex-row md:space-x-5">
+									{/* If project has a link, it can be used online */}
 									{project.link && (
 										<a
 											href={project.link}
@@ -303,9 +325,15 @@ export default function Home() {
 						{/* Arrow icons for going left and right */}
 						<div className="absolute flex justify-end transform -translate-y-1/2 right-5 top-1/2">
 							{project.id === projects[projects.length - 1].id ? (
-								<a href={`#${projects[0].id}`} className="btn btn-circle">
+								// Anchor tag does not work. Needs to handled manually
+								// If is the last element, send the element data of the first slide
+								<button
+									onClick={() => scrollToSlide(`${projects[0].id}`)}
+									type="button"
+									className="btn btn-circle"
+								>
 									❯
-								</a>
+								</button>
 							) : (
 								<button
 									onClick={scrollRight}
@@ -318,12 +346,17 @@ export default function Home() {
 						</div>
 						<div className="absolute flex justify-start transform -translate-y-1/2 left-5 top-1/2">
 							{project.id === projects[0].id ? (
-								<a
-									href={`#${projects[projects.length - 1].id}`}
+								// Anchor tag does not work. Needs to handled manually
+								// If is the first element, send the element data of the last slide
+								<button
+									onClick={() =>
+										scrollToSlide(`${projects[projects.length - 1].id}`)
+									}
+									type="button"
 									className="btn btn-circle"
 								>
 									❮
-								</a>
+								</button>
 							) : (
 								<button
 									onClick={scrollLeft}
