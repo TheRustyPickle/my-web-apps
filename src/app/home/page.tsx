@@ -200,7 +200,7 @@ export default function Home() {
 			</div>
 
 			{/* Start of the carousel */}
-			<div className="carousel w-full" ref={carouselRef}>
+			<div className="carousel w-full lg:pb-5" ref={carouselRef}>
 				{/* The initial card that is to be shown when the Home page is opened. It won't show up again while cycling the cards */}
 				<div className="carousel-item relative w-full justify-center items-center flex">
 					<div className="card w-auto h-1/4 bg-base-100 shadow-xl justify-center items-center flex m-5 hover:shadow-blue-400 transition-all duration-300 ease-in-out">
