@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 
 const projectLinks = [
-	{ name: "Media Scraper", href: "/media-scraper" },
+	// { name: "Media Scraper", href: "/media-scraper" },
 	{ name: "Repo D/L", href: "/repo-dl" },
 	// { name: "Survey", href: "/survey" },
 ];

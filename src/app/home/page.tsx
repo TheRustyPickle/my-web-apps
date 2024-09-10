@@ -98,7 +98,7 @@ const projects: Project[] = [
 		alt: "Screenshot of Media Scraper app",
 		description:
 			"A tool that allows you to scrape downloadable contents such as images, videos, pdf from websites.",
-		link: "/media-scraper",
+		link: "",
 		source: "https://github.com/TheRustyPickle/my-web-apps",
 		badges: ["Typescript", "NextJS", "TailwindCSS", "DaisyUI", "Puppeteer"],
 	},
