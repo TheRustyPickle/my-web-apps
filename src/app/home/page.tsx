@@ -15,6 +15,9 @@ import talon_2 from "/public/talon_2.png";
 import talon_3 from "/public/talon_3.png";
 import chirp_1 from "/public/chirp_1.png";
 import chirp_2 from "/public/chirp_2.png";
+import table from "/public/table.png";
+import funnel_1 from "/public/funnel_1.png";
+import funnel_2 from "/public/funnel_2.png";
 import diesel from "/public/diesel.svg";
 import actix from "/public/actix.png";
 import telegram from "/public/telegram.svg";
@@ -33,6 +36,8 @@ import terminal from "/public/terminal.svg";
 import gui from "/public/gui.svg";
 import websocket from "/public/websocket.svg";
 import egui from "/public/egui.png";
+import discord from "/public/discord.svg";
+import wasm from "/public/wasm.svg";
 import { useRef } from "react";
 
 const badgeImages: Record<string, StaticImageData> = {
@@ -55,6 +60,8 @@ const badgeImages: Record<string, StaticImageData> = {
 	Terminal: terminal,
 	GUI: gui,
 	egui: egui,
+	discord: discord,
+	wasm: wasm,
 };
 
 const badgeStyles: Record<string, string> = {
@@ -77,6 +84,8 @@ const badgeStyles: Record<string, string> = {
 	GUI: "bg-green-600 text-black",
 	Telegram: "bg-blue-300 text-black",
 	PostgreSQL: "bg-blue-500 text-white",
+	wasm: "bg-red-400 text-white",
+	discord: "bg-emerald-300 text-black",
 };
 
 type Project = {
@@ -154,6 +163,38 @@ const projects: Project[] = [
 			"PostgreSQL",
 		],
 	},
+	{
+		id: "slide6",
+		title: "Funnel",
+		images: [funnel_1, funnel_2],
+		alt: "Screenshot of Funnel app",
+		description:
+			"A platform for visualizing Discord analytics with full Wasm compatibility",
+		link: "https://therustypickle.github.io/Funnel-Web/",
+		source: "https://github.com/TheRustyPickle/Funnel-Web",
+		badges: ["Rust", "egui", "Websocket", "discord", "wasm"],
+	},
+	{
+		id: "slide7",
+		title: "Egui Selectable Table",
+		images: [table],
+		alt: "Screenshot of the library demo",
+		description:
+			"A library for egui to create tables with draggable cell and row selection",
+		link: "https://therustypickle.github.io/egui-selectable-table/",
+		source: "https://github.com/TheRustyPickle/egui-selectable-table",
+		badges: ["Rust", "egui"],
+	},
+	{
+		id: "slide8",
+		title: "Egui Theme Animation",
+		images: [],
+		alt: "",
+		description: "A library for egui to animate theme changes",
+		link: "https://therustypickle.github.io/egui-theme-lerp/",
+		source: "https://github.com/TheRustyPickle/egui-theme-lerp",
+		badges: ["Rust", "egui"],
+	},
 ];
 
 export default function Home() {
@@ -182,7 +223,7 @@ export default function Home() {
 	const scrollToSlide = (slide_link: string) => {
 		const targetElement = document.getElementById(slide_link);
 
-		// Scroll to the target element. Taken from stackoverflow
+		// Scroll to the target element. Taken from StackOverflow
 		if (targetElement) {
 			targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
 		}
