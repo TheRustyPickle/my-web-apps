@@ -47,7 +47,7 @@ export async function getHTMLContent(
 	// Can error when running on a server like on vercel
 	try {
 		browser = await puppeteer.launch({
-			headless: "new",
+			headless: true,
 		});
 		page = await browser.newPage();
 
@@ -63,7 +63,6 @@ export async function getHTMLContent(
 
 	try {
 		await page.goto(url, { timeout: navigationTime * 1000 });
-		await page.waitForTimeout(waitTime * 1000);
 		pageContent = await page.content();
 	} catch (err) {
 		failedAction = true;
