@@ -1,8 +1,8 @@
 "use client";
 
-import Image, { StaticImageData } from "next/image";
+import type { StaticImageData } from "next/image";
+import Image from "next/image";
 
-import scraper from "/public/scraper.png";
 import repo_dl from "/public/repo-dl.png";
 import next_js from "/public/next-js.svg";
 import rex_1 from "/public/rex_1.png";
@@ -38,6 +38,8 @@ import websocket from "/public/websocket.svg";
 import egui from "/public/egui.png";
 import discord from "/public/discord.svg";
 import wasm from "/public/wasm.svg";
+import dl_reddit from "/public/dl_reddit.png";
+import leptos from "/public/leptos.png";
 import { useRef } from "react";
 
 const badgeImages: Record<string, StaticImageData> = {
@@ -62,30 +64,7 @@ const badgeImages: Record<string, StaticImageData> = {
 	egui: egui,
 	discord: discord,
 	wasm: wasm,
-};
-
-const badgeStyles: Record<string, string> = {
-	Typescript: "bg-blue-400 text-white",
-	NextJS: "bg-gray-500 text-white",
-	DaisyUI: "bg-purple-800 text-white",
-	TailwindCSS: "bg-sky-600 text-white",
-	Rust: "bg-orange-500 text-black",
-	ActixWeb: "bg-indigo-500 text-white",
-	diesel: "bg-gray-700 text-white",
-	Octokit: "bg-red-600 text-white",
-	Puppeteer: "bg-green-500 text-white",
-	GTK4: "bg-teal-500 text-black",
-	egui: "bg-sky-400 text-black",
-	ratatui: "bg-neutral-500 text-white",
-	Encryption: "bg-purple-600 text-white",
-	Websocket: "bg-emerald-600 text-white",
-	SQLite: "bg-indigo-600 text-white",
-	Terminal: "bg-amber-400 text-black",
-	GUI: "bg-green-600 text-black",
-	Telegram: "bg-blue-300 text-black",
-	PostgreSQL: "bg-blue-500 text-white",
-	wasm: "bg-red-400 text-white",
-	discord: "bg-emerald-300 text-black",
+	leptos: leptos,
 };
 
 type Project = {
@@ -100,27 +79,6 @@ type Project = {
 };
 
 const projects: Project[] = [
-	{
-		id: "slide1",
-		title: "Media Scraper",
-		images: [scraper],
-		alt: "Screenshot of Media Scraper app",
-		description:
-			"A tool that allows you to scrape downloadable contents such as images, videos, pdf from websites.",
-		link: "",
-		source: "https://github.com/TheRustyPickle/my-web-apps",
-		badges: ["Typescript", "NextJS", "TailwindCSS", "DaisyUI", "Puppeteer"],
-	},
-	{
-		id: "slide2",
-		title: "Repo D/L",
-		images: [repo_dl],
-		alt: "Screenshot of Repo D/L app",
-		description: "A tool to check download data of Github repository releases",
-		link: "/repo-dl",
-		source: "https://github.com/TheRustyPickle/my-web-apps",
-		badges: ["Typescript", "NextJS", "TailwindCSS", "DaisyUI", "Octokit"],
-	},
 	{
 		id: "slide3",
 		title: "Rex",
@@ -142,6 +100,16 @@ const projects: Project[] = [
 		link: "",
 		source: "https://github.com/TheRustyPickle/Talon",
 		badges: ["Rust", "egui", "GUI", "Telegram"],
+	},
+	{
+		id: "slide2",
+		title: "Repo D/L",
+		images: [repo_dl],
+		alt: "Screenshot of Repo D/L app",
+		description: "A tool to check download data of Github repository releases",
+		link: "/repo-dl",
+		source: "https://github.com/TheRustyPickle/my-web-apps",
+		badges: ["Typescript", "NextJS", "TailwindCSS", "DaisyUI", "Octokit"],
 	},
 	{
 		id: "slide5",
@@ -173,6 +141,17 @@ const projects: Project[] = [
 		link: "https://therustypickle.github.io/Funnel-Web/",
 		source: "https://github.com/TheRustyPickle/Funnel-Web",
 		badges: ["Rust", "egui", "Websocket", "discord", "wasm"],
+	},
+	{
+		id: "slide9",
+		title: "DL-Reddit",
+		images: [dl_reddit],
+		alt: "Screenshot of DL-Reddit app",
+		description:
+			"A simple Leptos WASM web app to download videos/images from a Reddit post",
+		link: "https://dl-reddit.onrender.com/",
+		source: "https://github.com/TheRustyPickle/DL-Reddit",
+		badges: ["Rust", "leptos", "TailwindCSS", "wasm"],
 	},
 	{
 		id: "slide7",
@@ -230,19 +209,9 @@ export default function Home() {
 	};
 	return (
 		<div className="container mx-auto">
-			<div className="flex flex-col justify-center items-center">
-				<h1 className="text-3xl font-bold mb-4">
-					Welcome to my site of Web Apps
-				</h1>
-				<p className="text-lg">
-					Explore a collection of applications developed by me using various
-					technologies
-				</p>
-			</div>
-
 			{/* Start of the carousel */}
 			<div className="carousel w-full lg:pb-5" ref={carouselRef}>
-				{/* The initial card that is to be shown when the Home page is opened. It won't show up again while cycling the cards */}
+				{/* The initial card that is to be shown when the Homepage is opened. It won't show up again while cycling the cards */}
 				<div className="carousel-item relative w-full justify-center items-center flex">
 					<div className="card w-auto h-1/4 bg-base-100 shadow-xl justify-center items-center flex m-5 hover:shadow-blue-400 transition-all duration-300 ease-in-out">
 						<div className="card-body justify-center items-center flex">
@@ -324,7 +293,7 @@ export default function Home() {
 								{project.badges.map((badge, index) => (
 									<div
 										key={`${project.id}_badge_index_${index}`}
-										className={`badge badge-info mx-0.5 gap-1 ${badgeStyles[badge]}`}
+										className="badge badge-soft badge-neutral mx-0.5 gap-1"
 									>
 										{/* Add an image beside the badge if it exists */}
 										{badgeImages[badge] && (
@@ -350,7 +319,7 @@ export default function Home() {
 											href={project.link}
 											className="btn btn-md bg-blue-500 hover:bg-blue-600 text-white mx-0 md:mx-5 mb-2 md:mb-0 w-full md:w-auto"
 										>
-											Try It Online
+											View Online
 										</a>
 									)}
 									<a

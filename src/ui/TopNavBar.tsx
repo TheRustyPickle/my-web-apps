@@ -5,11 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 
-const projectLinks = [
-	// { name: "Media Scraper", href: "/media-scraper" },
-	{ name: "Repo D/L", href: "/repo-dl" },
-	// { name: "Survey", href: "/survey" },
-];
+const projectLinks = [{ name: "Repo D/L", href: "/repo-dl" }];
 
 const mainLinks = [
 	{ name: "Home", href: "/home" },
@@ -98,7 +94,7 @@ export default function NavBar() {
 						<ul className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
 							{mainLinks.map((link) => (
 								<div key={`index_${link.href}`}>
-									{/* If the value is Projects crete the collapsing menu or just a regular Link button */}
+									{/* If the value is Projects create the collapsing menu or just a regular Link button */}
 									{link.name === "Projects" ? (
 										<div className="collapse collapse-arrow">
 											<input type="checkbox" />
@@ -205,7 +201,6 @@ export default function NavBar() {
 					</div>
 				))}
 			</div>
-			{/* Center stuff gets misaligned if not present */}
 			<div className="navbar-end" />
 		</div>
 	);

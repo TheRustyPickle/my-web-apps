@@ -1,16 +1,16 @@
 "use client";
 
-import { RepoDLState, checkRepoDL } from "@/lib/actions";
-import { useFormState } from "react-dom";
+import { checkRepoDL } from "@/lib/actions";
+import type { RepoDLState } from "@/lib/actions";
 import ReleaseItem from "@/ui/ReleaseItem";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useActionState } from "react";
 import RotatingEllipsis from "@/ui/RotatingEllipsis";
 
 export default function Page() {
 	const [loading, setLoading] = useState(false);
 
 	const initialState: RepoDLState = { message: null };
-	const [state, dispatch] = useFormState(checkRepoDL, initialState);
+	const [state, dispatch] = useActionState(checkRepoDL, initialState);
 
 	const handleButtonPress = () => {
 		setLoading(true);

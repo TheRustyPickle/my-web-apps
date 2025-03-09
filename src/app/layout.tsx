@@ -8,10 +8,10 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
 	title: {
-		template: "%s | My Web Apps",
-		default: "My Web Apps",
+		template: "%s | My Site",
+		default: "My Site",
 	},
-	description: "A collection of random web apps created by Rusty Pickle",
+	description: "Projects by Rusty Pickle",
 };
 
 export default function RootLayout({
