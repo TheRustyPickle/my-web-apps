@@ -40,7 +40,7 @@ import discord from "/public/discord.svg";
 import wasm from "/public/wasm.svg";
 import dl_reddit from "/public/dl_reddit.png";
 import leptos from "/public/leptos.png";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 const badgeImages: Record<string, StaticImageData> = {
 	NextJS: next_js,
@@ -140,7 +140,15 @@ const projects: Project[] = [
 			"A platform for visualizing Discord analytics with full Wasm compatibility",
 		link: "https://therustypickle.github.io/Funnel-Web/",
 		source: "https://github.com/TheRustyPickle/Funnel-Web",
-		badges: ["Rust", "egui", "Websocket", "discord", "wasm"],
+		badges: [
+			"Rust",
+			"egui",
+			"Websocket",
+			"discord",
+			"wasm",
+			"PostgreSQL",
+			"diesel",
+		],
 	},
 	{
 		id: "slide9",
@@ -178,23 +186,42 @@ const projects: Project[] = [
 
 export default function Home() {
 	const carouselRef = useRef<HTMLDivElement>(null);
+	const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+	const totalSlides = projects.length + 1; // +1 for the initial intro slide
 
-	// Simulates scrolling left side horizontally
-	// Used for scrolling the main slide
-	const scrollLeft = () => {
-		carouselRef.current?.scrollBy({
-			left: -100,
-			behavior: "smooth",
-		});
+	// Scroll to previous slide in the main carousel
+	const scrollToPrevSlide = () => {
+		// Skip the intro slide when going back from any project slide
+		if (currentSlideIndex === 1) {
+			// If we're on the first project slide, go to the last project slide
+			const lastProjectIndex = totalSlides - 1;
+			setCurrentSlideIndex(lastProjectIndex);
+			scrollToSlide(projects[projects.length - 1].id);
+		} else if (currentSlideIndex > 1) {
+			// Normal previous for other project slides
+			const newIndex = currentSlideIndex - 1;
+			setCurrentSlideIndex(newIndex);
+			scrollToSlide(projects[newIndex - 1].id);
+		}
+		// Do nothing if we're on the intro slide (index 0)
 	};
 
-	// Simulates scrolling right side horizontally
-	// Used for scrolling the main slide
-	const scrollRight = () => {
-		carouselRef.current?.scrollBy({
-			left: 100,
-			behavior: "smooth",
-		});
+	// Scroll to next slide in the main carousel
+	const scrollToNextSlide = () => {
+		if (currentSlideIndex === 0) {
+			// From intro slide, go to first project
+			setCurrentSlideIndex(1);
+			scrollToSlide(projects[0].id);
+		} else if (currentSlideIndex === totalSlides - 1) {
+			// From last project, go to first project (skip intro)
+			setCurrentSlideIndex(1);
+			scrollToSlide(projects[0].id);
+		} else {
+			// Normal next for other slides
+			const newIndex = currentSlideIndex + 1;
+			setCurrentSlideIndex(newIndex);
+			scrollToSlide(projects[newIndex - 1].id);
+		}
 	};
 
 	// Get the element by the id attribute that is passed to the function
@@ -207,12 +234,16 @@ export default function Home() {
 			targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
 		}
 	};
+
 	return (
-		<div className="container mx-auto">
+		<div className="container mx-auto relative">
 			{/* Start of the carousel */}
 			<div className="carousel w-full lg:pb-5" ref={carouselRef}>
 				{/* The initial card that is to be shown when the Homepage is opened. It won't show up again while cycling the cards */}
-				<div className="carousel-item relative w-full justify-center items-center flex">
+				<div
+					id="intro-slide"
+					className="carousel-item relative w-full justify-center items-center flex"
+				>
 					<div className="card w-auto h-1/4 bg-base-100 shadow-xl justify-center items-center flex m-5 hover:shadow-blue-400 transition-all duration-300 ease-in-out">
 						<div className="card-body justify-center items-center flex">
 							<p className="text-base">
@@ -227,17 +258,8 @@ export default function Home() {
 							</a>
 						</div>
 					</div>
-					{/* The very initial slide. It will only have one button to go right side */}
-					<div className="absolute flex justify-end transform -translate-y-1/2 right-5 top-1/2">
-						<button
-							onClick={scrollRight}
-							className="btn btn-circle"
-							type="button"
-						>
-							❯
-						</button>
-					</div>
 				</div>
+
 				{/* Start of project slide */}
 				{projects.map((project) => (
 					// A carousel item for each of the projects
@@ -331,54 +353,34 @@ export default function Home() {
 								</div>
 							</div>
 						</div>
-
-						{/* Arrow icons for going left and right */}
-						<div className="absolute flex justify-end transform -translate-y-1/2 right-5 top-1/2">
-							{project.id === projects[projects.length - 1].id ? (
-								// Anchor tag does not work. Needs to handled manually
-								// If is the last element, send the element data of the first slide
-								<button
-									onClick={() => scrollToSlide(`${projects[0].id}`)}
-									type="button"
-									className="btn btn-circle"
-								>
-									❯
-								</button>
-							) : (
-								<button
-									onClick={scrollRight}
-									className="btn btn-circle"
-									type="button"
-								>
-									❯
-								</button>
-							)}
-						</div>
-						<div className="absolute flex justify-start transform -translate-y-1/2 left-5 top-1/2">
-							{project.id === projects[0].id ? (
-								// Anchor tag does not work. Needs to handled manually
-								// If is the first element, send the element data of the last slide
-								<button
-									onClick={() =>
-										scrollToSlide(`${projects[projects.length - 1].id}`)
-									}
-									type="button"
-									className="btn btn-circle"
-								>
-									❮
-								</button>
-							) : (
-								<button
-									onClick={scrollLeft}
-									className="btn btn-circle"
-									type="button"
-								>
-									❮
-								</button>
-							)}
-						</div>
 					</div>
 				))}
+			</div>
+
+			{/* Fixed position navigation arrows for main carousel */}
+			<div className="absolute flex justify-between w-full top-1/2 transform -translate-y-1/2 px-5 pointer-events-none">
+				{/* Left arrow - hide on first slide */}
+				{currentSlideIndex !== 0 && (
+					<button
+						onClick={scrollToPrevSlide}
+						className="btn btn-circle btn-soft pointer-events-auto"
+						type="button"
+					>
+						❮
+					</button>
+				)}
+
+				{/* Empty div to maintain layout when left button is hidden */}
+				{currentSlideIndex === 0 && <div />}
+
+				{/* Right arrow - always visible */}
+				<button
+					onClick={scrollToNextSlide}
+					className="btn btn-circle btn-soft pointer-events-auto"
+					type="button"
+				>
+					❯
+				</button>
 			</div>
 		</div>
 	);

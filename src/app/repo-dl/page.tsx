@@ -37,15 +37,16 @@ export default function Page() {
 					<button
 						type="submit"
 						onClick={handleButtonPress}
-						className={`btn btn-md bg-blue-500 hover:bg-blue-600 text-white mt-3 py-2 min-w-28 my-2 w-1/6  ${
-							loading ? "opacity-50 cursor-not-allowed" : ""
+						className={`btn bg-blue-500 hover:bg-blue-600 text-white mt-3 py-3 h-12 min-w-28 my-2 w-1/6 sm:h-12 md:h-11 lg:h-9 ${
+							loading ? "opacity-50 cursor-wait" : ""
 						}`}
 						aria-disabled={loading}
 					>
 						{!loading ? (
 							"Check Releases"
 						) : (
-							<div className="text-white opacity-50 cursor-not-allowed">
+							<div className="text-white opacity-50 cursor-not-allowed flex flex-row gap-2">
+								<span className="loading loading-spinner" />
 								<RotatingEllipsis />
 							</div>
 						)}
