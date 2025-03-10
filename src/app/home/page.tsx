@@ -348,7 +348,7 @@ export default function Home() {
 										href={project.source}
 										className="btn btn-md bg-blue-500 hover:bg-blue-600 text-white mx-0 md:mx-5 w-full md:w-auto"
 									>
-										Source Code
+										View On Github
 									</a>
 								</div>
 							</div>
