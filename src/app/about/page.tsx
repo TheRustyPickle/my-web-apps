@@ -9,7 +9,7 @@ import Image from "next/image";
 export default function Home() {
 	return (
 		<div className="flex flex-col items-center justify-center h-screen">
-			<div className="card w-auto lg:w-2/5 p-6 shadow-xl hover:shadow-blue-400 hover:shadow-xl transition-all duration-300 ease-in-out">
+			<div className="card bg-white w-auto lg:w-2/5 p-6 shadow-xl hover:shadow-blue-400 hover:shadow-xl transition-all duration-300 ease-in-out">
 				<p className="text-lg text-center">
 					I&#39;m a hobbyist programmer exploring the vast world of technology
 					and software development. Currently, I&#39;m primarily working with

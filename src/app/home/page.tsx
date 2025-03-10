@@ -269,7 +269,7 @@ export default function Home() {
 						className="carousel-item relative w-full justify-center items-center flex"
 					>
 						{/* The card inside the carousel */}
-						<div className="card w-auto lg:w-3/5 shadow-md justify-center items-center flex m-5 hover:shadow-blue-400 hover:shadow-xl transition-all duration-300 ease-in-out">
+						<div className="card bg-white w-auto lg:w-3/5 shadow-md justify-center items-center flex m-5 hover:shadow-blue-400 hover:shadow-xl transition-all duration-300 ease-in-out">
 							{/* A carousel inside carousel that for cycling through the images */}
 							<div className="carousel">
 								{project.images.map((image, index) => (
@@ -282,7 +282,7 @@ export default function Home() {
 											<Image
 												src={image}
 												alt={project.alt}
-												className="rounded-xl"
+												className="py-4 rounded-xl"
 												height={400}
 												quality={100}
 											/>
